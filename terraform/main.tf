@@ -1,4 +1,4 @@
-# Create CosmosDB, Azure AI Search, Blob Storage, and Redis Cache
+# Create CosmosDB, Azure AI Search & Blob Storage
 
 terraform {
   required_providers {
