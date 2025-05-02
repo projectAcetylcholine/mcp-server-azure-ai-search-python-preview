@@ -1,7 +1,7 @@
 from typing import Any, MutableMapping
 
 from shared import AISearchMCP
-from .data_access_objects import SearchIndexDao
+from data_access_objects import SearchIndexDao
 
 mcp = AISearchMCP("AI Search MCP Service", log_level="DEBUG")
 

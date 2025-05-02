@@ -47,7 +47,7 @@ The following tool groups are available for the AZURE_AI_SEARCH_MCP_TOOL_GROUPS 
 - READ_INDEX - tools used to list all the indices in the service
 - READ_DOCUMENTS - tools used to query the indices to retrieve documents
 - WRITE_INDEX - tools used to Create, delete, update, or configure indices
-- WRITE_DOCUMENTS - tools for Adding, Updating or Deleting Documents documents from an index
+- WRITE_DOCUMENTS - tools for Adding, Updating or Deleting documents from an index
 - READ_INDEXERS - tools used to list indexers available
 - WRITE_INDEXERS - tools used to configure indexers in the service
 - RUN_INDEXERS - Start indexers to automatically crawl data sources and view the results

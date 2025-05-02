@@ -12,8 +12,9 @@ class AISearchMCP(FastMCP):
         super().__init__(name=name, instructions=instructions, **settings)
 
         self.all_tool_names: list[str] = [
-            "list_index_names",
-            "list_index_schemas",
+            "retrieve_index_names",
+            "retrieve_index_schemas",
+            "retrieve_index_schema"
         ]
 
     def _get_role_tools(self) -> list[str]:
