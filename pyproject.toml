@@ -8,5 +8,6 @@ dependencies = [
     "azure-identity>=1.21.0",
     "azure-search-documents>=11.5.2",
     "azure-storage-blob>=12.25.1",
+    "mcp>=1.7.0",
     "pydantic>=2.11.4",
 ]
