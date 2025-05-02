@@ -1,8 +1,9 @@
 
 
-from .dao import SearchIndexDao, SearchBaseDao
+from .dao import SearchIndexDao, SearchBaseDao, SearchClientDao
 
 __all__ = (
     'SearchBaseDao',
-    'SearchIndexDao'
+    'SearchIndexDao',
+    'SearchClientDao'
 )

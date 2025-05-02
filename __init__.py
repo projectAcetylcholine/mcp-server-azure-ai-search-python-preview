@@ -1,5 +1,5 @@
 
-from .data_access_objects import SearchIndexDao, SearchBaseDao
+from .data_access_objects import SearchIndexDao, SearchBaseDao, SearchClientDao
 __all__ = (
- 'SearchIndexDao', 'SearchBaseDao'
+ 'SearchIndexDao', 'SearchBaseDao', 'SearchClientDao'
 )

@@ -14,13 +14,17 @@ class AISearchMCP(FastMCP):
         self.all_tool_names: list[str] = [
             "retrieve_index_names",
             "retrieve_index_schemas",
-            "retrieve_index_schema"
+            "retrieve_index_schema",
+            "query_index"
         ]
 
     def _get_role_tools(self) -> list[str]:
-        user_role = os.environ.get("AZURE_AI_SEARCH_MCP_TOOL_GROUPS", "ALL")
+        tool_groups_raw = os.environ.get("AZURE_AI_SEARCH_MCP_TOOL_GROUPS", "ALL")
+        tool_groups_list = tool_groups_raw.split(",")
 
-        # ["hospital-admin", "caregiver", "patient"]
+        filtered_list_of_tools: list[str] = []
+
+        # This is a dictionary of the groups
         tool_database: dict[str, list[str]] = {
             "ALL" : self.all_tool_names,
             "READ_INDEX": self.all_tool_names,
@@ -32,20 +36,25 @@ class AISearchMCP(FastMCP):
             "RUN_INDEXERS" : self.all_tool_names
         }
 
-        return tool_database[user_role]
+        for tool_group_name in tool_groups_list:
+            current_list_of_tools = tool_database[tool_group_name]
+            filtered_list_of_tools += current_list_of_tools
+
+        # Eliminate duplicates while preserving order
+        unique_tool_names = list(dict.fromkeys(filtered_list_of_tools))
+
+        return unique_tool_names
 
     async def list_tools(self) -> list[MCPTool]:
 
-        context = self.get_context()
-        session = context.session
-
+        # This is the filtered names of tools to send back to calling MCP client
         filtered_tool_names = self._get_role_tools()
         filtered_tool_list: list[MCPTool] = []
+
+        # This is the list of tools registered at the service
         tool_list: list[MCPTool] = await super().list_tools()
 
-        logger.debug(context)
-        logger.debug(session)
-
+        # Preparing the filtered list of tools
         for current_tool in tool_list:
             if current_tool.name in filtered_tool_names:
                 filtered_tool_list.append(current_tool)

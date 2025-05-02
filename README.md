@@ -9,18 +9,46 @@ This MCP service provides you with the following capabilities
 - Run Queries against specific AI Search Indices
 - Configure and Run Indexers
 
+
+### Available Tools
+
+We are continuously working on adding and upgrading the service capabilities. More tools are going to be added in the near future.
+
+For the time being, the following tools are available from the service:
+
+| Tool Name              | Tool Group     | Tool Description                                                              |
+|------------------------|----------------|-------------------------------------------------------------------------------|
+| retrieve_index_names   | READ_INDEX     | Retrieve all names of indexes from the AI Search Service                      |   
+| retrieve_index_schemas | READ_INDEX     | Retrieve all index schemas from the AI Search Service                         | 
+| retrieve_index_schema  | READ_INDEX     | Retrieve the schema for a specific index from the AI Search Service           | 
+| query_index            | READ_DOCUMENTS | Retrieve the schema for a specific index from the AI Search Service           |
+
+
+### MCP Service Tool Groups
+
+We do not want your MCP Host to be overwhelmed with the amount of tools coming from this service.
+
+These are the available tool groups and their purposes:
+
+- READ_INDEX - tools used to list and describe the indices in the service
+- WRITE_INDEX - tools used to Create, delete, update, or configure indices
+- READ_DOCUMENTS - tools used to query the indices to retrieve documents
+- WRITE_DOCUMENTS - tools for Adding, Updating or Deleting documents from an index
+- READ_INDEXERS - tools used to list indexers available
+- WRITE_INDEXERS - tools used to configure indexers in the service
+- RUN_INDEXERS - Start indexers to automatically crawl data sources and view the results
+
 ### Pre-Requisites
 
-You will need to have configured an Service Principal that will be used to authentic against the AI Search service you are interacting with. You may also use the AI Search Key with read/write privilleges on the index dependening on what capabilities you are looking to leverage from the service. 
+You will need to have configured a Service Principal that will be used to authentic against the AI Search service you are interacting with. You may also use the AI Search Key with read/write privilleges on the index dependening on what capabilities you are looking to leverage from the service. 
 
-Python 3.12 or later is needed and you have to install uv as well to leverage the service.
+Python 3.12 or later is needed, and you have to install uv as well to leverage the service.
 
 The repository below contains a Terraform script that can accelerate the provisioning of an AI Search service and service principal necessary to help you get started.
 
 ### Installing Dependencies
 
 Follow the links below to install uv, python and the module containing the MCP service
-
 
 ## Configuration of Environment Variables in MCP Host
 
@@ -42,15 +70,6 @@ If you are authenticating with an API key, then you have to configure the follow
 - AZURE_AI_SEARCH_API_KEY
 
 You can also filter the list of tools returned to your MCP host by specifying a comma-delimited list of tool groups in your configuration.
-The following tool groups are available for the AZURE_AI_SEARCH_MCP_TOOL_GROUPS variable:
-
-- READ_INDEX - tools used to list all the indices in the service
-- READ_DOCUMENTS - tools used to query the indices to retrieve documents
-- WRITE_INDEX - tools used to Create, delete, update, or configure indices
-- WRITE_DOCUMENTS - tools for Adding, Updating or Deleting documents from an index
-- READ_INDEXERS - tools used to list indexers available
-- WRITE_INDEXERS - tools used to configure indexers in the service
-- RUN_INDEXERS - Start indexers to automatically crawl data sources and view the results
 
 | Environment Variable            | Value Data Type  | Why It Is Needed                                                                                           |
 |---------------------------------|------------------|------------------------------------------------------------------------------------------------------------|
