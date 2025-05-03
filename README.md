@@ -77,7 +77,7 @@ You can install the mcp service as follows:
 
 ````bash
 
-uv install mcp-server-azure-ai-search-preview
+uv publish
 
 ````
 
