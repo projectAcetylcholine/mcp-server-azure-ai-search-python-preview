@@ -1,7 +1,7 @@
 
 import pytest
 from unittest.mock import patch, MagicMock
-from data_access_objects import SearchClientDao  # Replace with the correct import path
+from data_access_objects import SearchClientDao
 
 
 @pytest.fixture

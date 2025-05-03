@@ -3,7 +3,7 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
-from data_access_objects import SearchIndexerDao  # Replace `your_module` with your actual module name
+from data_access_objects import SearchIndexerDao
 
 @pytest.fixture
 def mock_dao():
