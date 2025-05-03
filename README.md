@@ -30,6 +30,8 @@ We do not want your MCP Host to be overwhelmed with the amount of tools coming f
 
 These are the available tool groups and their purposes:
 
+- READ_OPERATIONS - tools useds for read-only operations
+- WRITE_OPERATIONS - tools that are used for creating, modifying or removing entries
 - READ_INDEX - tools used to list and describe the indices in the service
 - WRITE_INDEX - tools used to Create, delete, update, or configure indices
 - READ_DOCUMENTS - tools used to query the indices to retrieve documents
