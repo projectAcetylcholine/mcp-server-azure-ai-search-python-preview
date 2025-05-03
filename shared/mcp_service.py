@@ -25,8 +25,9 @@ class AISearchMCP(FastMCP):
         filtered_list_of_tools: list[str] = []
 
         # This is a dictionary of the groups
+        # @TODO: define the tool names for each group accordingly
         tool_database: dict[str, list[str]] = {
-            "ALL" : self.all_tool_names,
+            "ALL" : self.all_tool_names, # this is the only one that is complete. The rest will be fixed shortly
             "READ_INDEX": self.all_tool_names,
             "WRITE_INDEX": self.all_tool_names,
             "READ_DOCUMENTS": self.all_tool_names,
