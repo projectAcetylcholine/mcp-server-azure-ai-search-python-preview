@@ -59,6 +59,20 @@ The repository below contains a Terraform script that can accelerate the provisi
 
 Follow the links below to install uv, python and the module containing the MCP service
 
+- [Installing uv](https://docs.astral.sh/uv/getting-started/installation/)
+- [Installing Python if Necessary with uv](https://docs.astral.sh/uv/guides/install-python/)
+
+You can install the mcp service as follows:
+
+````bash
+
+uv install mcp-server-azure-ai-search-preview
+
+````
+
+You can also clone this git repo and install the service via the main.py file in this repo
+
+
 ## Configuration of Environment Variables in MCP Host
 
 If you are authenticating with a managed identity you will need to pass in the environment variables in your MCP host configuration. You can also use the AI Search API Key to Authenticate.
@@ -91,3 +105,43 @@ You can also filter the list of tools returned to your MCP host by specifying a 
 | AZURE_AI_SEARCH_API_VERSION     | `string`         | API Version to use.                                                                                        |
 | AZURE_AI_SEARCH_MCP_TOOL_GROUPS | `string`         | A comma-delimited list of groups of tools you would like to filter when retrieving tools for your MCP host |
 
+
+### MCP Host Configuration 
+
+This is an example of the MCP configuration for VScode Agent Mode
+
+````json
+
+{
+    "inputs": [
+        {
+            "type": "promptString",
+            "id": "AZURE_AI_SEARCH_API_KEY",
+            "description": "AZURE_AI_SEARCH_API_KEY",
+            "password": true
+        }
+    ],
+    "servers": {
+
+        "ai_search_mcp": {
+            "type": "stdio",
+            "command": "uv",
+
+            "args": [
+                "run",
+                "--directory",
+                "/Users/isekpo/Microsoft/mcp-server-azure-ai-search", // this is where the repo is cloned to
+                "main.py"
+            ],
+            "env": {
+                "AZURE_AI_SEARCH_MCP_TOOL_GROUPS": "ALL",
+                "AZURE_AI_SEARCH_ENDPOINT": "https://{service_name}.search.windows.net",
+                "AZURE_AI_SEARCH_API_VERSION": "2025-03-01-preview",
+                "AZURE_AUTHENTICATION_METHOD": "api-search-key",
+                "AZURE_AI_SEARCH_API_KEY":  "${input:AZURE_AI_SEARCH_API_KEY}"
+            }
+        }
+    }
+}
+
+````
