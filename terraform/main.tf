@@ -18,13 +18,13 @@ provider "azurerm" {
 
 # Resource Group
 resource "azurerm_resource_group" "main" {
-  name     = "azure-mcp-hackathon"
+  name     = "contoso-grocery"
   location = "Central US"
 }
 
 # Azure AI Search Instance
 resource "azurerm_search_service" "search" {
-  name                = "confluentizzysearch"
+  name                = "contosogrocery"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   sku                 = "standard"
@@ -36,7 +36,7 @@ resource "azurerm_search_service" "search" {
 
 # Azure Cosmos DB (SQL API)
 resource "azurerm_cosmosdb_account" "cosmosdb" {
-  name                = "confluentizzycosmos"
+  name                = "contosogrocery"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   offer_type          = "Standard"
@@ -61,43 +61,53 @@ resource "azurerm_cosmosdb_sql_database" "retailstore" {
   throughput          = 400 # Provisioned throughput at the database level (optional if you want)
 }
 
-# Purchases Container
-resource "azurerm_cosmosdb_sql_container" "purchases" {
-  name                = "purchases"
+# Net Sales Container
+resource "azurerm_cosmosdb_sql_container" "net_sales" {
+  name                = "net_sales"
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_cosmosdb_account.cosmosdb.name
   database_name       = azurerm_cosmosdb_sql_database.retailstore.name
 
-  partition_key_paths  = ["/customer_id"]
+  partition_key_paths  = ["/sku_id"]
   throughput          = 400 # optional: you can set throughput here too, or rely on database throughput
 }
 
-# Returns Container
-resource "azurerm_cosmosdb_sql_container" "returns" {
-  name                = "returns"
+# Product Inventory Container
+resource "azurerm_cosmosdb_sql_container" "product_inventory" {
+  name                = "product_inventory"
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_cosmosdb_account.cosmosdb.name
   database_name       = azurerm_cosmosdb_sql_database.retailstore.name
 
-  partition_key_paths  = ["/customer_id"]
+  partition_key_paths  = ["/sku_id"]
   throughput          = 400
 }
 
-# Replenishments Container
-resource "azurerm_cosmosdb_sql_container" "replenishments" {
-  name                = "replenishments"
+# Product Pricing Container
+resource "azurerm_cosmosdb_sql_container" "product_pricing" {
+  name                = "product_pricing"
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_cosmosdb_account.cosmosdb.name
   database_name       = azurerm_cosmosdb_sql_database.retailstore.name
 
-  partition_key_paths  = ["/vendor_id"]
+  partition_key_paths  = ["/sku_id"]
   throughput          = 400
 }
 
+# Product SKUs Container
+resource "azurerm_cosmosdb_sql_container" "product_skus" {
+  name                = "product_skus"
+  resource_group_name = azurerm_resource_group.main.name
+  account_name        = azurerm_cosmosdb_account.cosmosdb.name
+  database_name       = azurerm_cosmosdb_sql_database.retailstore.name
+
+  partition_key_paths  = ["/sku_id"]
+  throughput          = 400
+}
 
 # Azure Blob Storage (Storage Account)
 resource "azurerm_storage_account" "storage" {
-  name                     = "confluentizzyretailstore"
+  name                     = "contosogrocery"
   resource_group_name      = azurerm_resource_group.main.name
   location                 = azurerm_resource_group.main.location
   account_tier             = "Standard"
@@ -109,8 +119,8 @@ resource "azurerm_storage_account" "storage" {
 locals {
   container_names = [
     "departments",
-    "product-pricing",
-    "product-skus"
+    "product-skus",
+    "product-pricing"
   ]
 }
 
