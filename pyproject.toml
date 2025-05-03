@@ -10,4 +10,5 @@ dependencies = [
     "azure-storage-blob>=12.25.1",
     "mcp>=1.7.0",
     "pydantic>=2.11.4",
+    "pytest>=8.3.5",
 ]
