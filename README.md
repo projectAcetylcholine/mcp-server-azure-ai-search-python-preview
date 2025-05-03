@@ -21,6 +21,8 @@ These tools have the ability to modify data in your AI Search Service.
 
 Please note that all tools are currently marked `experimental` and may change behavior `without advanced notice`.
 
+You should always review and verify all AI-generated content for accuracy and correctness.
+
 Please proceed with caution and use at your own risk.
 
 ### Available Tools
