@@ -5,7 +5,7 @@ from data_access_objects import SearchIndexDao, SearchClientDao
 
 mcp = AISearchMCP("AI Search MCP Service", log_level="DEBUG")
 
-@mcp.tool()
+@mcp.tool(description="Retrieves the names of all indexes from the Azure AI Search service")
 async def retrieve_index_names() -> list[str]:
     """
     Retrieves the names of all indexes from the Azure AI Search service.
@@ -17,7 +17,7 @@ async def retrieve_index_names() -> list[str]:
     return dao.retrieve_index_names()
 
 
-@mcp.tool()
+@mcp.tool(description="Retrieves the schemas for all indexes from the Azure AI Search service")
 async def retrieve_index_schemas() -> list[MutableMapping[str, Any]]:
     """
     Retrieves the schemas for all indexes from the Azure AI Search service.
@@ -29,7 +29,7 @@ async def retrieve_index_schemas() -> list[MutableMapping[str, Any]]:
     return dao.retrieve_index_schemas()
 
 
-@mcp.tool()
+@mcp.tool(description="Retrieves the schema for a specific index from the Azure AI Search service")
 async def retrieve_index_schema(index_name: str) -> MutableMapping[str, Any]:
     """
     Retrieves the schema for a specific index from the Azure AI Search service.
@@ -44,7 +44,7 @@ async def retrieve_index_schema(index_name: str) -> MutableMapping[str, Any]:
     return dao.retrieve_index_schema(index_name)
 
 
-@mcp.tool()
+@mcp.tool(description="Search a specific index for documents in that index")
 async def query_index(
         index_name: str,
         search_text: Optional[str] = None,

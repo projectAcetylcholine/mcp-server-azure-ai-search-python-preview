@@ -7,7 +7,7 @@ This MCP service provides you with the following capabilities
 - Create new Indices
 - Update Existing Indices
 - Run Queries against specific AI Search Indices
-- Configure and Run Indexers
+- Create and Update indexers
 
 
 ### Available Tools
@@ -35,8 +35,8 @@ These are the available tool groups and their purposes:
 - READ_DOCUMENTS - tools used to query the indices to retrieve documents
 - WRITE_DOCUMENTS - tools for Adding, Updating or Deleting documents from an index
 - READ_INDEXERS - tools used to list indexers available
-- WRITE_INDEXERS - tools used to configure indexers in the service
-- RUN_INDEXERS - Start indexers to automatically crawl data sources and view the results
+- WRITE_INDEXERS - tools used to configure indexers,  data sources & skill sets
+- READ_INDEXERS - tools used to retrieve information about data sources, skill sets and indexers
 
 ### Pre-Requisites
 

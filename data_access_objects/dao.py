@@ -5,8 +5,8 @@ from azure.core.credentials import AzureKeyCredential
 from azure.core.paging import ItemPaged
 from azure.identity import DefaultAzureCredential
 from azure.search.documents import SearchClient, SearchItemPaged
-from azure.search.documents.indexes import SearchIndexClient
-from azure.search.documents.indexes.models import SearchIndex
+from azure.search.documents.indexes import SearchIndexClient, SearchIndexerClient
+from azure.search.documents.indexes.models import SearchIndex, SearchIndexer
 
 
 class SearchBaseDao:
@@ -167,14 +167,14 @@ class SearchClientDao(SearchBaseDao):
             the count returned is an approximation.
         :rtype: list[dict]
         """
-        search_results:  SearchItemPaged[dict] = self.client.search(search_text=search_text,
-               include_total_count=include_total_count,
-               filter=query_filter,
-               order_by=order_by,
-               select=select,
-               skip=skip,
-               top=top
-        )
+        search_results: SearchItemPaged[dict] = self.client.search(search_text=search_text,
+                                                                   include_total_count=include_total_count,
+                                                                   filter=query_filter,
+                                                                   order_by=order_by,
+                                                                   select=select,
+                                                                   skip=skip,
+                                                                   top=top
+                                                                   )
 
         query_results: list[dict] = []
 
@@ -183,3 +183,129 @@ class SearchClientDao(SearchBaseDao):
 
         return query_results
 
+
+class SearchIndexerDao(SearchBaseDao):
+    """
+    A data access object (DAO) for managing Azure AI Search indexers, data sources, and skillsets.
+
+    This class provides methods for listing, retrieving, creating, and deleting indexers,
+    as well as accessing data source connections and skillsets configured in the Azure AI Search service.
+    """
+
+    def __init__(self):
+        """
+        Initializes the SearchIndexerDao by creating a SearchIndexerClient using credentials
+        and service configuration from the base class.
+        """
+        super().__init__()
+        credentials = self._fetch_credentials()
+        self.client = SearchIndexerClient(self.service_endpoint, credentials, api_version=self.api_version)
+
+    def list_indexers(self) -> list[str]:
+        """
+        Retrieves the names of all indexers registered in the Azure AI Search service.
+
+        Returns:
+            list[str]: A list of indexer names.
+        """
+        search_results = self.client.get_indexer_names()
+        indexer_names: list[str] = []
+
+        for search_result in search_results:
+            indexer_names.append(search_result)
+        return indexer_names
+
+    def get_indexer(self, name: str) -> MutableMapping[str, Any]:
+        """
+        Retrieves the full definition of a specific indexer.
+
+        Args:
+            name (str): The name of the indexer to retrieve.
+
+        Returns:
+            MutableMapping[str, Any]: A dictionary representing the serialized indexer definition.
+        """
+        indexer_details = self.client.get_indexer(name)
+        indexer_result = indexer_details.serialize(keep_readonly=True)
+        return indexer_result
+
+    def create_indexer(self, indexer: SearchIndexer) -> MutableMapping[str, Any]:
+        """
+        Creates a new indexer in the Azure AI Search service.
+
+        The following properties must be set on the indexer object:
+            - name (str)
+            - data_source_name (str)
+            - target_index_name (str)
+            - description (Optional[str])
+
+        Args:
+            indexer (SearchIndexer): The SearchIndexer object to be created.
+
+        Returns:
+            MutableMapping[str, Any]: A dictionary representing the created indexer.
+        """
+        indexer_result = self.client.create_indexer(indexer)
+        return indexer_result.serialize(keep_readonly=True)
+
+    def delete_indexer(self, name: str) -> None:
+        """
+        Deletes an indexer by name from the Azure AI Search service.
+
+        Args:
+            name (str): The name of the indexer to delete.
+        """
+        self.client.delete_indexer(name)
+
+    def list_data_sources(self) -> list[str]:
+        """
+        Lists the names of all data source connections configured in the AI Search service.
+
+        Returns:
+            list[str]: A list of data source connection names.
+        """
+        data_source_names = self.client.get_data_source_connection_names()
+        search_results: list[str] = []
+        for data_source_name in data_source_names:
+            search_results.append(data_source_name)
+        return search_results
+
+    def get_data_source(self, name: str) -> MutableMapping[str, Any]:
+        """
+        Retrieves the full definition of a specific data source connection.
+
+        Args:
+            name (str): The name of the data source connection to retrieve.
+
+        Returns:
+            MutableMapping[str, Any]: A dictionary representing the serialized data source definition.
+        """
+        data_source_detail = self.client.get_data_source_connection(name=name)
+        data_source_result = data_source_detail.serialize(keep_readonly=True)
+        return data_source_result
+
+    def list_skill_sets(self) -> list[str]:
+        """
+        Lists the names of all skillsets configured in the Azure AI Search service.
+
+        Returns:
+            list[str]: A list of skillset names.
+        """
+        skill_set_names = self.client.get_skillset_names()
+        search_results: list[str] = []
+        for skill_set_name in skill_set_names:
+            search_results.append(skill_set_name)
+        return search_results
+
+    def get_skill_set(self, skill_set_name: str) -> MutableMapping[str, Any]:
+        """
+        Retrieves the full definition of a specific skillset.
+
+        Args:
+            skill_set_name (str): The name of the skillset to retrieve.
+
+        Returns:
+            MutableMapping[str, Any]: A dictionary representing the serialized skillset definition.
+        """
+        skill_set_result = self.client.get_skillset(skill_set_name)
+        return skill_set_result.serialize(keep_readonly=True)
