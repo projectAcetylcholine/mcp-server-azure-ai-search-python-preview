@@ -120,6 +120,13 @@ class SearchIndexDao(SearchBaseDao):
 
         return search_results.serialize(keep_readonly=True)
 
+    def create_index(self, index_definition: SearchIndex) ->  MutableMapping[str, Any]:
+        operation_results = self.client.create_index(index_definition)
+        return operation_results.serialize(keep_readonly=True)
+
+
+    def delete_index(self, index_name: str):
+        self.client.delete_index(index_name)
 
 class SearchClientDao(SearchBaseDao):
 
@@ -131,6 +138,36 @@ class SearchClientDao(SearchBaseDao):
         super().__init__()
         credentials = self._fetch_credentials()
         self.client = SearchClient(self.service_endpoint, index_name, credentials, api_version=self.api_version)
+
+
+    def add_document(self, document: dict):
+
+        documents_to_add = [document]
+        operation_results = self.add_documents(documents_to_add)
+        return operation_results[0]
+
+
+    def add_documents(self, documents: list[dict]) -> list[MutableMapping[str, Any]]:
+
+        operation_results = self.client.upload_documents(documents)
+
+        results: list[ MutableMapping[str, Any]] = []
+
+        for operation_result in operation_results:
+            results.append(operation_result.serialize(keep_readonly=True))
+
+        return results
+
+    def delete_document(self, documents: list[dict]) -> list[MutableMapping[str, Any]]:
+
+        operation_results = self.client.delete_documents(documents)
+
+        results: list[MutableMapping[str, Any]] = []
+
+        for operation_result in operation_results:
+            results.append(operation_result.serialize(keep_readonly=True))
+
+        return results
 
     def query_index(self,
                     search_text: Optional[str] = None,
