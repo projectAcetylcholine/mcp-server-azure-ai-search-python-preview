@@ -1,7 +1,9 @@
 from typing import Any, MutableMapping, Optional, List
 
+from azure.search.documents.indexes.models import SearchIndexer
+
 from shared import AISearchMCP
-from data_access_objects import SearchIndexDao, SearchClientDao
+from data_access_objects import SearchIndexDao, SearchClientDao, SearchIndexerDao
 
 mcp = AISearchMCP("AI Search MCP Service", log_level="DEBUG")
 
@@ -55,8 +57,8 @@ async def query_index(
         skip: Optional[int] = None,
         top: Optional[int] = None,
         include_total_count: Optional[bool] = None,
-        ) -> list[dict]:
-        """Search the Azure search index for documents.
+) -> list[dict]:
+    """Search the Azure search index for documents.
 
         :param str index_name: The name of the index to query. This parameter is required
         :param str search_text: A full-text search query expression; Use "*" or omit this parameter to
@@ -82,21 +84,133 @@ async def query_index(
             the count returned is an approximation.
         :rtype: list[dict]
         """
-        search_client_dao = SearchClientDao(index_name)
+    search_client_dao = SearchClientDao(index_name)
 
-        search_results: list[dict] = search_client_dao.query_index(
-            search_text=search_text,
-            include_total_count=include_total_count,
-            query_filter=query_filter,
-            order_by=order_by,
-            select=select,
-            skip=skip,
-            top=top
-        )
-        return search_results
+    search_results: list[dict] = search_client_dao.query_index(
+        search_text=search_text,
+        include_total_count=include_total_count,
+        query_filter=query_filter,
+        order_by=order_by,
+        select=select,
+        skip=skip,
+        top=top
+    )
+
+    return search_results
+
+@mcp.tool(description="Retrieves the list of all the names of the indexers registered in the Azure AI Search service")
+async def list_indexers() -> list[str]:
+    """
+    Retrieves the list of all indexers registered in the Azure AI Search service.
+
+    Returns:
+        list[str]: A list of indexer names.
+    """
+    search_indexer_dao = SearchIndexerDao()
+    return search_indexer_dao.list_indexers()
+
+@mcp.tool(description="Retrieves the details of a specific indexer by name.")
+async def get_indexer(name: str) -> MutableMapping[str, Any]:
+    """
+    Retrieves the details of a specific indexer by name.
+
+    Args:
+        name (str): The name of the indexer to retrieve.
+
+    Returns:
+        MutableMapping[str, Any]: A dictionary containing the indexer details.
+    """
+    search_indexer_dao = SearchIndexerDao()
+    return search_indexer_dao.get_indexer(name)
+
+@mcp.tool(description="Creates a new indexer in the Azure AI Search service")
+async def create_indexer(indexer: SearchIndexer) -> MutableMapping[str, Any]:
+    """
+    Creates a new indexer in the Azure AI Search service.
+
+    The following properties must be set on the indexer object:
+        - name (str)
+        - data_source_name (str)
+        - target_index_name (str)
+        - description (Optional[str])
+
+    Args:
+        indexer (SearchIndexer): The SearchIndexer object to be created.
+
+    Returns:
+        MutableMapping[str, Any]: A dictionary representing the created indexer.
+    """
+    search_indexer_dao = SearchIndexerDao()
+    return search_indexer_dao.create_indexer(indexer)
+
+@mcp.tool(description="Deletes an indexer from the Azure AI Search service by name")
+async def delete_indexer(name: str) -> None:
+    """
+    Deletes an indexer from the Azure AI Search service by name.
+
+    Args:
+        name (str): The name of the indexer to delete.
+
+    Returns:
+        None
+    """
+    search_indexer_dao = SearchIndexerDao()
+    return search_indexer_dao.delete_indexer(name)
+
+@mcp.tool(description="Retrieves the list of all data source names configured in the Azure AI Search service")
+async def list_data_sources() -> list[str]:
+    """
+    Retrieves the list of all data source names configured in the Azure AI Search service.
+
+    Returns:
+        list[str]: A list of data source names.
+    """
+    search_indexer_dao = SearchIndexerDao()
+    return search_indexer_dao.list_data_sources()
+
+@mcp.tool(description="Retrieves the details of a specific data source by name")
+async def get_data_source(name: str) -> MutableMapping[str, Any]:
+    """
+    Retrieves the details of a specific data source by name.
+
+    Args:
+        name (str): The name of the data source to retrieve.
+
+    Returns:
+        MutableMapping[str, Any]: A dictionary containing the data source details.
+    """
+    search_indexer_dao = SearchIndexerDao()
+    return search_indexer_dao.get_data_source(name)
+
+@mcp.tool(description="Retrieves the list of the names of all skill sets configured in the Azure AI Search service")
+async def list_skill_sets() -> list[str]:
+    """
+    Retrieves the list of all skill sets configured in the Azure AI Search service.
+
+    Returns:
+        list[str]: A list of skill set names.
+    """
+    search_indexer_dao = SearchIndexerDao()
+    return search_indexer_dao.list_skill_sets()
+
+@mcp.tool(description="Retrieves the details of a specific skill set by nam")
+async def get_skill_set(skill_set_name: str) -> MutableMapping[str, Any]:
+    """
+    Retrieves the details of a specific skill set by name.
+
+    Args:
+        skill_set_name (str): The name of the skill set to retrieve.
+
+    Returns:
+        MutableMapping[str, Any]: A dictionary containing the skill set details.
+    """
+    search_indexer_dao = SearchIndexerDao()
+    return search_indexer_dao.get_skill_set(skill_set_name)
+
 
 def run_mcp_service():
     mcp.run('stdio')
+
 
 if __name__ == "__main__":
     run_mcp_service()
