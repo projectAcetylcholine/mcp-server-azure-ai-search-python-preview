@@ -130,7 +130,7 @@ This is an example of the MCP configuration for VScode Agent Mode
             "args": [
                 "run",
                 "--directory",
-                "/Users/isekpo/Microsoft/mcp-server-azure-ai-search", // this is where the repo is cloned to
+                "/Users/isekpo/Microsoft/mcp-server-azure-ai-search",
                 "main.py"
             ],
             "env": {
