@@ -1,10 +1,7 @@
 
 from unittest.mock import patch, MagicMock
-
 import pytest
-
 from data_access_objects import SearchIndexDao
-
 
 @pytest.fixture
 def mock_dao():
