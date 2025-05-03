@@ -1,0 +1,72 @@
+[
+  {
+    "id": "401",
+    "sku_id": "401",
+    "name": "Rotisserie Chicken",
+    "description": "Freshly roasted whole rotisserie chicken",
+    "department": "deli"
+  },
+  {
+    "id": "402",
+    "sku_id": "402",
+    "name": "Macaroni & Cheese",
+    "description": "Creamy macaroni and cheese ready to heat",
+    "department": "deli"
+  },
+  {
+    "id": "403",
+    "sku_id": "403",
+    "name": "Italian Sub",
+    "description": "Pre-made Italian sub sandwich with salami, ham, and cheese",
+    "department": "deli"
+  },
+  {
+    "id": "404",
+    "sku_id": "404",
+    "name": "Chicken Caesar Wrap",
+    "description": "Grilled chicken Caesar salad wrap",
+    "department": "deli"
+  },
+  {
+    "id": "405",
+    "sku_id": "405",
+    "name": "Potato Salad",
+    "description": "Classic deli-style potato salad",
+    "department": "deli"
+  },
+  {
+    "id": "406",
+    "sku_id": "406",
+    "name": "Turkey Club Sandwich",
+    "description": "Triple-decker sandwich with turkey, bacon, lettuce and tomato",
+    "department": "deli"
+  },
+  {
+    "id": "407",
+    "sku_id": "407",
+    "name": "Hummus and Pita",
+    "description": "Creamy hummus served with fresh pita slices",
+    "department": "deli"
+  },
+  {
+    "id": "408",
+    "sku_id": "408",
+    "name": "BBQ Ribs",
+    "description": "Half rack of BBQ pork ribs ready to heat",
+    "department": "deli"
+  },
+  {
+    "id": "409",
+    "sku_id": "409",
+    "name": "Fried Chicken Tenders",
+    "description": "Golden fried chicken tenders",
+    "department": "deli"
+  },
+  {
+    "id": "410",
+    "sku_id": "410",
+    "name": "Pasta Primavera",
+    "description": "Pasta with seasonal vegetables in a light garlic sauce",
+    "department": "deli"
+  }
+]

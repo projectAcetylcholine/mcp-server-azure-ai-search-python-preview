@@ -1,0 +1,72 @@
+[
+  {
+    "id": "602",
+    "sku_id": "602",
+    "name": "Advil 24 Caplets",
+    "description": "24 caplets of Advil pain reliever",
+    "department": "pharmacy"
+  },
+  {
+    "id": "603",
+    "sku_id": "603",
+    "name": "Cough Syrup 150ml",
+    "description": "Bottle of 150ml cough syrup",
+    "department": "pharmacy"
+  },
+  {
+    "id": "604",
+    "sku_id": "604",
+    "name": "Vitamin C 1000mg",
+    "description": "60 tablets of Vitamin C 1000mg",
+    "department": "pharmacy"
+  },
+  {
+    "id": "605",
+    "sku_id": "605",
+    "name": "Bandage Wrap",
+    "description": "Elastic bandage wrap, 3 inches x 5 yards",
+    "department": "pharmacy"
+  },
+  {
+    "id": "606",
+    "sku_id": "606",
+    "name": "Antiseptic Spray",
+    "description": "120ml antiseptic wound spray",
+    "department": "pharmacy"
+  },
+  {
+    "id": "607",
+    "sku_id": "607",
+    "name": "Allergy Relief Tablets",
+    "description": "Box of 10 allergy relief tablets",
+    "department": "pharmacy"
+  },
+  {
+    "id": "608",
+    "sku_id": "608",
+    "name": "Digital Thermometer",
+    "description": "Fast-read digital thermometer",
+    "department": "pharmacy"
+  },
+  {
+    "id": "609",
+    "sku_id": "609",
+    "name": "Hydrocortisone Cream",
+    "description": "1oz tube of hydrocortisone anti-itch cream",
+    "department": "pharmacy"
+  },
+  {
+    "id": "610",
+    "sku_id": "610",
+    "name": "First Aid Kit",
+    "description": "30-piece home first aid kit",
+    "department": "pharmacy"
+  },
+  {
+    "id": "611",
+    "sku_id": "611",
+    "name": "Eye Drops",
+    "description": "15ml bottle of sterile eye drops",
+    "department": "pharmacy"
+  }
+]

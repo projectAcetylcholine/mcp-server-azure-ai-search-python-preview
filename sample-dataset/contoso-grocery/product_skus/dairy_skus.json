@@ -1,0 +1,72 @@
+[
+  {
+    "id": "302",
+    "sku_id": "302",
+    "name": "Low Fat Milk - 1 Gallon",
+    "description": "A gallon of 2% low fat milk",
+    "department": "dairy"
+  },
+  {
+    "id": "303",
+    "sku_id": "303",
+    "name": "Greek Yogurt - 4 Pack",
+    "description": "Four 6oz cups of plain Greek yogurt",
+    "department": "dairy"
+  },
+  {
+    "id": "304",
+    "sku_id": "304",
+    "name": "Cheddar Cheese Block",
+    "description": "16oz block of sharp cheddar cheese",
+    "department": "dairy"
+  },
+  {
+    "id": "305",
+    "sku_id": "305",
+    "name": "Butter - Salted",
+    "description": "16oz salted butter in four sticks",
+    "department": "dairy"
+  },
+  {
+    "id": "306",
+    "sku_id": "306",
+    "name": "Cream Cheese - 8oz",
+    "description": "8oz pack of original cream cheese",
+    "department": "dairy"
+  },
+  {
+    "id": "307",
+    "sku_id": "307",
+    "name": "Cottage Cheese - 16oz",
+    "description": "16oz container of small curd cottage cheese",
+    "department": "dairy"
+  },
+  {
+    "id": "308",
+    "sku_id": "308",
+    "name": "Organic Whole Milk - 1 Quart",
+    "description": "1 quart of USDA certified organic whole milk",
+    "department": "dairy"
+  },
+  {
+    "id": "309",
+    "sku_id": "309",
+    "name": "Sour Cream - 16oz",
+    "description": "16oz container of sour cream",
+    "department": "dairy"
+  },
+  {
+    "id": "310",
+    "sku_id": "310",
+    "name": "Mozzarella Cheese - Shredded",
+    "description": "8oz bag of shredded mozzarella cheese",
+    "department": "dairy"
+  },
+  {
+    "id": "311",
+    "sku_id": "311",
+    "name": "Heavy Whipping Cream - Pint",
+    "description": "1 pint of heavy whipping cream",
+    "department": "dairy"
+  }
+]

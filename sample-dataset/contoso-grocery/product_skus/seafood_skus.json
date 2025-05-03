@@ -1,0 +1,72 @@
+[
+  {
+    "id": "802",
+    "sku_id": "802",
+    "name": "Wild Caught Cod",
+    "description": "1lb fillet of wild-caught cod",
+    "department": "seafood"
+  },
+  {
+    "id": "803",
+    "sku_id": "803",
+    "name": "Jumbo Shrimp",
+    "description": "1lb bag of peeled jumbo shrimp",
+    "department": "seafood"
+  },
+  {
+    "id": "804",
+    "sku_id": "804",
+    "name": "Lobster Tail",
+    "description": "Single frozen lobster tail",
+    "department": "seafood"
+  },
+  {
+    "id": "805",
+    "sku_id": "805",
+    "name": "Fresh Scallops",
+    "description": "12oz pack of fresh scallops",
+    "department": "seafood"
+  },
+  {
+    "id": "806",
+    "sku_id": "806",
+    "name": "Tilapia Fillets",
+    "description": "1lb pack of tilapia fillets",
+    "department": "seafood"
+  },
+  {
+    "id": "807",
+    "sku_id": "807",
+    "name": "King Crab Legs",
+    "description": "Frozen king crab legs, 1lb",
+    "department": "seafood"
+  },
+  {
+    "id": "808",
+    "sku_id": "808",
+    "name": "Seaweed Salad",
+    "description": "8oz container of seasoned seaweed salad",
+    "department": "seafood"
+  },
+  {
+    "id": "809",
+    "sku_id": "809",
+    "name": "Smoked Salmon",
+    "description": "4oz pack of smoked Atlantic salmon",
+    "department": "seafood"
+  },
+  {
+    "id": "810",
+    "sku_id": "810",
+    "name": "Calamari Rings",
+    "description": "Breaded calamari rings, 1lb bag",
+    "department": "seafood"
+  },
+  {
+    "id": "811",
+    "sku_id": "811",
+    "name": "Imitation Crab Meat",
+    "description": "12oz package of imitation crab sticks",
+    "department": "seafood"
+  }
+]

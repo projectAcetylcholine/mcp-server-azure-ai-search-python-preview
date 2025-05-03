@@ -1,0 +1,72 @@
+[
+  {
+    "id": "202",
+    "sku_id": "202",
+    "name": "Clorox Bleach",
+    "description": "Disinfecting bleach cleaner",
+    "department": "cleaning"
+  },
+  {
+    "id": "203",
+    "sku_id": "203",
+    "name": "Lysol Spray",
+    "description": "Multi-surface disinfectant spray",
+    "department": "cleaning"
+  },
+  {
+    "id": "204",
+    "sku_id": "204",
+    "name": "Mr. Clean Magic Eraser",
+    "description": "Cleaning sponge for tough stains",
+    "department": "cleaning"
+  },
+  {
+    "id": "205",
+    "sku_id": "205",
+    "name": "Windex Glass Cleaner",
+    "description": "Glass and window cleaning spray",
+    "department": "cleaning"
+  },
+  {
+    "id": "206",
+    "sku_id": "206",
+    "name": "Swiffer WetJet",
+    "description": "Floor mop cleaning system",
+    "department": "cleaning"
+  },
+  {
+    "id": "207",
+    "sku_id": "207",
+    "name": "Palmolive Dish Soap",
+    "description": "Liquid soap for washing dishes",
+    "department": "cleaning"
+  },
+  {
+    "id": "208",
+    "sku_id": "208",
+    "name": "Scrubbing Bubbles",
+    "description": "Bathroom cleaner with foaming action",
+    "department": "cleaning"
+  },
+  {
+    "id": "209",
+    "sku_id": "209",
+    "name": "Febreze Air Freshener",
+    "description": "Odor eliminating spray for air",
+    "department": "cleaning"
+  },
+  {
+    "id": "210",
+    "sku_id": "210",
+    "name": "OxiClean Stain Remover",
+    "description": "Laundry additive for tough stains",
+    "department": "cleaning"
+  },
+  {
+    "id": "211",
+    "sku_id": "211",
+    "name": "Comet Powder Cleaner",
+    "description": "Abrasive cleanser for sinks and tiles",
+    "department": "cleaning"
+  }
+]

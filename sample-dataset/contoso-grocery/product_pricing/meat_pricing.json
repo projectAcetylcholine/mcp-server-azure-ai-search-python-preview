@@ -1,0 +1,52 @@
+[
+  {
+    "id": "502",
+    "sku_id": "502",
+    "unit_price": 5.99
+  },
+  {
+    "id": "503",
+    "sku_id": "503",
+    "unit_price": 4.99
+  },
+  {
+    "id": "504",
+    "sku_id": "504",
+    "unit_price": 6.49
+  },
+  {
+    "id": "505",
+    "sku_id": "505",
+    "unit_price": 12.99
+  },
+  {
+    "id": "506",
+    "sku_id": "506",
+    "unit_price": 13.49
+  },
+  {
+    "id": "507",
+    "sku_id": "507",
+    "unit_price": 5.79
+  },
+  {
+    "id": "508",
+    "sku_id": "508",
+    "unit_price": 4.69
+  },
+  {
+    "id": "509",
+    "sku_id": "509",
+    "unit_price": 10.99
+  },
+  {
+    "id": "510",
+    "sku_id": "510",
+    "unit_price": 7.49
+  },
+  {
+    "id": "511",
+    "sku_id": "511",
+    "unit_price": 9.89
+  }
+]

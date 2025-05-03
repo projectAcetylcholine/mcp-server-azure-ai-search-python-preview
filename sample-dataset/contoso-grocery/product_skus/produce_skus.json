@@ -1,0 +1,72 @@
+[
+  {
+    "id": "702",
+    "sku_id": "702",
+    "name": "Fresh Blueberries",
+    "description": "6oz container of fresh blueberries",
+    "department": "produce"
+  },
+  {
+    "id": "703",
+    "sku_id": "703",
+    "name": "Organic Spinach",
+    "description": "5oz bag of organic spinach",
+    "department": "produce"
+  },
+  {
+    "id": "704",
+    "sku_id": "704",
+    "name": "Baby Carrots",
+    "description": "16oz pack of baby carrots",
+    "department": "produce"
+  },
+  {
+    "id": "705",
+    "sku_id": "705",
+    "name": "Red Seedless Grapes",
+    "description": "2lb bag of red seedless grapes",
+    "department": "produce"
+  },
+  {
+    "id": "706",
+    "sku_id": "706",
+    "name": "Organic Kale",
+    "description": "1 bunch of organic kale",
+    "department": "produce"
+  },
+  {
+    "id": "707",
+    "sku_id": "707",
+    "name": "Crisp Romaine Lettuce",
+    "description": "3 heads of romaine lettuce",
+    "department": "produce"
+  },
+  {
+    "id": "708",
+    "sku_id": "708",
+    "name": "Avocados",
+    "description": "4 count of Hass avocados",
+    "department": "produce"
+  },
+  {
+    "id": "709",
+    "sku_id": "709",
+    "name": "Bananas",
+    "description": "Bunch of 6 ripe bananas",
+    "department": "produce"
+  },
+  {
+    "id": "710",
+    "sku_id": "710",
+    "name": "Sweet Potatoes",
+    "description": "3lb bag of sweet potatoes",
+    "department": "produce"
+  },
+  {
+    "id": "711",
+    "sku_id": "711",
+    "name": "Cucumbers",
+    "description": "3-pack of fresh cucumbers",
+    "department": "produce"
+  }
+]

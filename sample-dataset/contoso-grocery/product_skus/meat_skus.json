@@ -1,0 +1,72 @@
+[
+  {
+    "id": "502",
+    "sku_id": "502",
+    "name": "Boneless Chicken Breast",
+    "description": "Skinless Boneless Chicken Breast - 1lb",
+    "department": "meat"
+  },
+  {
+    "id": "503",
+    "sku_id": "503",
+    "name": "Pork Chops",
+    "description": "Center Cut Pork Chops - 1lb",
+    "department": "meat"
+  },
+  {
+    "id": "504",
+    "sku_id": "504",
+    "name": "Ground Turkey",
+    "description": "Lean Ground Turkey - 1lb",
+    "department": "meat"
+  },
+  {
+    "id": "505",
+    "sku_id": "505",
+    "name": "Beef Ribeye Steak",
+    "description": "Ribeye Steak - USDA Choice - 12oz",
+    "department": "meat"
+  },
+  {
+    "id": "506",
+    "sku_id": "506",
+    "name": "Lamb Chops",
+    "description": "Grass-fed Lamb Chops - 1lb",
+    "department": "meat"
+  },
+  {
+    "id": "507",
+    "sku_id": "507",
+    "name": "Bacon",
+    "description": "Thick Cut Smoked Bacon - 12oz",
+    "department": "meat"
+  },
+  {
+    "id": "508",
+    "sku_id": "508",
+    "name": "Sausage Links",
+    "description": "Italian Sausage Links - 1lb",
+    "department": "meat"
+  },
+  {
+    "id": "509",
+    "sku_id": "509",
+    "name": "Beef Brisket",
+    "description": "Beef Brisket - 2lb cut",
+    "department": "meat"
+  },
+  {
+    "id": "510",
+    "sku_id": "510",
+    "name": "Turkey Drumsticks",
+    "description": "Turkey Drumsticks - 2 per pack",
+    "department": "meat"
+  },
+  {
+    "id": "511",
+    "sku_id": "511",
+    "name": "Beef Short Ribs",
+    "description": "Bone-in Short Ribs - 1.5lb",
+    "department": "meat"
+  }
+]

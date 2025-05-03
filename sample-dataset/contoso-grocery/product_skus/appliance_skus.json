@@ -1,0 +1,72 @@
+[
+  {
+    "id": "101",
+    "sku_id": "101",
+    "name": "Toaster",
+    "description": "Electric Toaster",
+    "department": "appliances"
+  },
+  {
+    "id": "102",
+    "sku_id": "102",
+    "name": "Microwave Oven",
+    "description": "Solar-powered Microwave oven",
+    "department": "appliances"
+  },
+  {
+    "id": "103",
+    "sku_id": "103",
+    "name": "Blender",
+    "description": "High-speed kitchen blender",
+    "department": "appliances"
+  },
+  {
+    "id": "104",
+    "sku_id": "104",
+    "name": "Coffee Maker",
+    "description": "Programmable drip coffee maker",
+    "department": "appliances"
+  },
+  {
+    "id": "105",
+    "sku_id": "105",
+    "name": "Electric Kettle",
+    "description": "1.7L stainless steel electric kettle",
+    "department": "appliances"
+  },
+  {
+    "id": "106",
+    "sku_id": "106",
+    "name": "Rice Cooker",
+    "description": "Non-stick automatic rice cooker",
+    "department": "appliances"
+  },
+  {
+    "id": "107",
+    "sku_id": "107",
+    "name": "Slow Cooker",
+    "description": "6-quart programmable slow cooker",
+    "department": "appliances"
+  },
+  {
+    "id": "108",
+    "sku_id": "108",
+    "name": "Food Processor",
+    "description": "Multi-function food processor with attachments",
+    "department": "appliances"
+  },
+  {
+    "id": "109",
+    "sku_id": "109",
+    "name": "Air Fryer",
+    "description": "Digital air fryer with adjustable temperature",
+    "department": "appliances"
+  },
+  {
+    "id": "110",
+    "sku_id": "110",
+    "name": "Hand Mixer",
+    "description": "5-speed handheld electric mixer",
+    "department": "appliances"
+  }
+]
