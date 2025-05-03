@@ -25,4 +25,4 @@ Then we will set up Indexes for all 5 data sets in our AI Search Service
   
 Finally we will configure Skillsets and Data Sources for indexers that will migrate our datasets from the data sources into our AI Search instance
 
-We can now test how to create/retrieve/delete indices, documents and indexers from the MCP service
+We can now test how to create/list/query/delete indices, documents and indexers from the MCP service
