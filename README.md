@@ -9,10 +9,17 @@ This experimental MCP service provides you with the following capabilities:
 - Run Queries against specific AI Search Indices
 - Create and Update indexers
 
+We are still implementing and testing out these capabilities. Some of the tool groups described above are not yet available but would be coming soon.
 
-### Available Tools
+### Disclaimer
 
 We are continuously working on adding and upgrading the service capabilities. More tools are going to be added in the near future.
+
+Please note that all tools are currently marked experimental and have the ability to modify records in your AI Search Service. 
+
+Please proceed with caution and use at your own risk. 
+
+### Available Tools
 
 For the time being, the following tools are available from the service:
 
