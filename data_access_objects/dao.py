@@ -220,14 +220,15 @@ class SearchClientDao(SearchBaseDao):
             the count returned is an approximation.
         :rtype: list[dict]
         """
-        search_results: SearchItemPaged[dict] = self.client.search(search_text=search_text,
-                                                                   include_total_count=include_total_count,
-                                                                   filter=query_filter,
-                                                                   order_by=order_by,
-                                                                   select=select,
-                                                                   skip=skip,
-                                                                   top=top
-                                                                   )
+        search_results: SearchItemPaged[dict] = self.client.search(
+            search_text=search_text,
+            include_total_count=include_total_count,
+            filter=query_filter,
+            order_by=order_by,
+            select=select,
+            skip=skip,
+            top=top
+        )
 
         query_results: list[dict] = []
 
