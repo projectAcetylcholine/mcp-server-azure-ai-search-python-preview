@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from typing import MutableMapping, Any, Optional, List, Union
 
 from azure.core.credentials import AzureKeyCredential
@@ -6,6 +7,8 @@ from azure.core.paging import ItemPaged
 from azure.identity import DefaultAzureCredential
 from azure.search.documents import SearchClient, SearchItemPaged
 from azure.search.documents.indexes import SearchIndexClient, SearchIndexerClient
+from azure.search.documents.indexes._generated.models import FieldMapping, IndexingSchedule, IndexingParameters, \
+    IndexingParametersConfiguration
 from azure.search.documents.indexes.models import SearchIndex, SearchIndexer
 
 
@@ -79,6 +82,13 @@ class SearchIndexDao(SearchBaseDao):
         credentials = self._fetch_credentials()
         self.client = SearchIndexClient(self.service_endpoint, credentials, api_version=self.api_version)
 
+    def close(self):
+        """Shuts down the Data Access Object instance and associated resources
+
+        :rtype: None
+        """
+        self.client.close()
+
     def retrieve_index_names(self) -> list[str]:
         """
         Retrieves a list of all search index names from the Azure Search service.
@@ -139,6 +149,12 @@ class SearchClientDao(SearchBaseDao):
         credentials = self._fetch_credentials()
         self.client = SearchClient(self.service_endpoint, index_name, credentials, api_version=self.api_version)
 
+    def close(self):
+        """Shuts down the Data Access Object instance and associated resources
+
+        :rtype: None
+        """
+        self.client.close()
 
     def add_document(self, document: dict):
 
@@ -238,6 +254,13 @@ class SearchIndexerDao(SearchBaseDao):
         credentials = self._fetch_credentials()
         self.client = SearchIndexerClient(self.service_endpoint, credentials, api_version=self.api_version)
 
+    def close(self):
+        """Shuts down the Data Access Object instance and associated resources
+
+        :rtype: None
+        """
+        self.client.close()
+
     def list_indexers(self) -> list[str]:
         """
         Retrieves the names of all indexers registered in the Azure AI Search service.
@@ -266,23 +289,49 @@ class SearchIndexerDao(SearchBaseDao):
         indexer_result = indexer_details.serialize(keep_readonly=True)
         return indexer_result
 
-    def create_indexer(self, indexer: SearchIndexer) -> MutableMapping[str, Any]:
+    def create_indexer(self, name: str,
+                       data_source_name: str,
+                       target_index_name: str,
+                       description: str,
+                       skill_set_name: str,
+                       field_mappings: list[FieldMapping],
+                       output_field_mappings: list[FieldMapping]
+                       ) -> MutableMapping[str, Any]:
         """
         Creates a new indexer in the Azure AI Search service.
 
-        The following properties must be set on the indexer object:
-            - name (str)
-            - data_source_name (str)
-            - target_index_name (str)
-            - description (Optional[str])
-
         Args:
-            indexer (SearchIndexer): The SearchIndexer object to be created.
+            name (str): The name of the indexer to be created.
+            data_source_name (str): The name of the indexer to be created.
+            target_index_name (str): The name of the indexer to be created.
+            description (str): The name of the indexer to be created.
+            skill_set_name (str): The name of the indexer to be created.
+            field_mappings (list[FieldMapping]): The name of the indexer to be created.
+            output_field_mappings (list[FieldMapping]): The name of the indexer to be created.
 
         Returns:
             MutableMapping[str, Any]: A dictionary representing the created indexer.
         """
-        indexer_result = self.client.create_indexer(indexer)
+
+        interval: timedelta = timedelta(minutes=5)
+        schedule: IndexingSchedule = IndexingSchedule(interval=interval)
+
+        indexing_configuration = IndexingParametersConfiguration(data_to_extract='contentAndMetadata', parsing_mode='json', query_timeout=None)
+
+        parameters =  IndexingParameters(configuration=indexing_configuration)
+
+        indexer_definition = SearchIndexer(
+            name=name,
+            data_source_name=data_source_name,
+            target_index_name=target_index_name,
+            description=description,
+            skillset_name=skill_set_name,
+            field_mappings=field_mappings,
+            output_field_mappings=output_field_mappings,
+            schedule=schedule,
+            parameters=parameters
+        )
+        indexer_result = self.client.create_indexer(indexer_definition)
         return indexer_result.serialize(keep_readonly=True)
 
     def delete_indexer(self, name: str) -> None:
