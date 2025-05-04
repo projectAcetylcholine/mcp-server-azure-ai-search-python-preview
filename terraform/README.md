@@ -42,8 +42,9 @@ az login
   # Specify the Azure Subscription you are using for the Automation
   az account set --subscription "your-subscription-id"
 
-  # Specifiy the Subscription in the Environment Variable for Terraform
-  ARM_SUBSCRIPTION_ID="your-subscription-id"
+  # Specify the Tenant ID Subscription in the Environment Variable for Terraform
+  export ARM_TENANT_ID="your tenant id"
+  export ARM_SUBSCRIPTION_ID="your-subscription-id"
   ```
 
 ---

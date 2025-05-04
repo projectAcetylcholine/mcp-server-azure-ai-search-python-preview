@@ -196,4 +196,3 @@ output "storage_account_blob_endpoint" {
   description = "Blob service endpoint for the storage account"
   value       = azurerm_storage_account.storage.primary_blob_endpoint
 }
-
