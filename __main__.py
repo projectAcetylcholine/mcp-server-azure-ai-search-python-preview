@@ -1,6 +1,7 @@
 from typing import Any, MutableMapping, Optional, List
 
-from azure.search.documents.indexes.models import SearchIndexer
+from azure.search.documents.indexes._generated.models import FieldMapping
+from azure.search.documents.indexes.models import SearchIndexer, SearchIndex
 
 from shared import AISearchMCP
 from data_access_objects import SearchIndexDao, SearchClientDao, SearchIndexerDao
@@ -8,7 +9,7 @@ from data_access_objects import SearchIndexDao, SearchClientDao, SearchIndexerDa
 mcp = AISearchMCP("AI Search MCP Service", log_level="DEBUG")
 
 @mcp.tool(description="Retrieves the names of all indexes from the Azure AI Search service")
-async def retrieve_index_names() -> list[str]:
+async def list_index_names() -> list[str]:
     """
     Retrieves the names of all indexes from the Azure AI Search service.
 
@@ -20,7 +21,7 @@ async def retrieve_index_names() -> list[str]:
 
 
 @mcp.tool(description="Retrieves the schemas for all indexes from the Azure AI Search service")
-async def retrieve_index_schemas() -> list[MutableMapping[str, Any]]:
+async def list_index_schemas() -> list[MutableMapping[str, Any]]:
     """
     Retrieves the schemas for all indexes from the Azure AI Search service.
 
@@ -45,6 +46,64 @@ async def retrieve_index_schema(index_name: str) -> MutableMapping[str, Any]:
     dao = SearchIndexDao()
     return dao.retrieve_index_schema(index_name)
 
+@mcp.tool(description="Creates an AI Search index")
+async def create_index(index_definition: SearchIndex) -> MutableMapping[str, Any]:
+    """
+    Creates a new index in the Azure AI Search service.
+
+    Args:
+        index_definition (SearchIndex): The full definition of the index to be created.
+
+    Returns:
+        MutableMapping[str, Any]: The serialized response of the created index.
+    """
+    dao = SearchIndexDao()
+    return dao.create_index(index_definition)
+
+@mcp.tool(description="Deletes the specified index from AI Search")
+async def delete_index(index_name: str):
+    """
+    Deletes an existing index from the Azure AI Search service.
+
+    Args:
+        index_name (str): The name of the index to be deleted.
+
+    Returns:
+        None
+    """
+    dao = SearchIndexDao()
+    return dao.delete_index(index_name)
+
+@mcp.tool(description="Adds a document to the index compatible with the schema of the index")
+async def add_document(index_name: str, document: dict):
+    """
+    Uploads a single document to the Azure AI Search index.
+
+    Args:
+        index_name (str) the name of the index
+        document (dict): The document to be added to the index.
+
+    Returns:
+        MutableMapping[str, Any]: The serialized result of the add operation for the single document.
+    """
+    search_client_dao = SearchClientDao(index_name)
+    search_client_dao.add_document(document)
+
+@mcp.tool(description="Deletes a single document from the specified index")
+async def delete_document(index_name: str, key_field_name: str, key_value: str):
+    """
+    Deletes a single document from the Azure AI Search index.
+
+    Args:
+        index_name (str) the name of the index
+        key_field_name (str): The name of the key field in the index
+        key_value (str): The value of the key field
+
+    Returns:
+        list[MutableMapping[str, Any]]: A list of serialized results for each document deletion operation.
+    """
+    search_client_dao = SearchClientDao(index_name)
+    search_client_dao.delete_document(key_field_name, key_value)
 
 @mcp.tool(description="Search a specific index for documents in that index")
 async def query_index(
@@ -124,24 +183,40 @@ async def get_indexer(name: str) -> MutableMapping[str, Any]:
     return search_indexer_dao.get_indexer(name)
 
 @mcp.tool(description="Creates a new indexer in the Azure AI Search service")
-async def create_indexer(indexer: SearchIndexer) -> MutableMapping[str, Any]:
+async def create_indexer(
+        name: str,
+        data_source_name: str,
+        target_index_name: str,
+        description: str,
+        field_mappings: list[FieldMapping],
+        output_field_mappings: list[FieldMapping],
+        skill_set_name: str = None
+    ) -> MutableMapping[str, Any]:
     """
     Creates a new indexer in the Azure AI Search service.
 
-    The following properties must be set on the indexer object:
-        - name (str)
-        - data_source_name (str)
-        - target_index_name (str)
-        - description (Optional[str])
-
     Args:
-        indexer (SearchIndexer): The SearchIndexer object to be created.
+        name (str): The name of the indexer to be created.
+        data_source_name (str): The name of the indexer to be created.
+        target_index_name (str): The name of the indexer to be created.
+        description (str): The name of the indexer to be created.
+        field_mappings (list[FieldMapping]): The name of the indexer to be created.
+        output_field_mappings (list[FieldMapping]): The name of the indexer to be created.
+        skill_set_name (str): The name of the indexer to be created.
 
     Returns:
         MutableMapping[str, Any]: A dictionary representing the created indexer.
     """
     search_indexer_dao = SearchIndexerDao()
-    return search_indexer_dao.create_indexer(indexer)
+    return search_indexer_dao.create_indexer(
+        name=name,
+        data_source_name=data_source_name,
+        target_index_name=target_index_name,
+        description=description,
+        field_mappings=field_mappings,
+        output_field_mappings=output_field_mappings,
+        skill_set_name=skill_set_name
+    )
 
 @mcp.tool(description="Deletes an indexer from the Azure AI Search service by name")
 async def delete_indexer(name: str) -> None:

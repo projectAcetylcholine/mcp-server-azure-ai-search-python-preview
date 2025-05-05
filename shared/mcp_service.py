@@ -12,10 +12,66 @@ class AISearchMCP(FastMCP):
         super().__init__(name=name, instructions=instructions, **settings)
 
         self.all_tool_names: list[str] = [
-            "retrieve_index_names",
-            "retrieve_index_schemas",
+            "list_index_names",
+            "list_index_schemas",
             "retrieve_index_schema",
-            "query_index"
+            "create_index",
+            "delete_index",
+            "add_document",
+            "delete_document",
+            "query_index",
+            "list_indexers",
+            "get_indexer",
+            "create_indexer",
+            "delete_indexer",
+            "list_data_sources",
+            "get_data_source",
+            "list_skill_sets",
+            "get_skill_set"
+        ]
+
+        self.read_index_tool_names = [
+            "list_index_names",
+            "list_index_schemas",
+            "retrieve_index_schema"
+        ]
+
+        self.write_index_tool_names = [
+            "list_index_names",
+            "list_index_schemas",
+            "retrieve_index_schema",
+            "create_index",
+            "delete_index",
+        ]
+
+        self.read_document_tool_names = [
+            "query_index",
+        ]
+
+        self.write_document_tool_names = [
+            "add_document",
+            "delete_document",
+            "query_index",
+        ]
+
+        self.read_indexer_tool_names = [
+            "list_indexers",
+            "get_indexer",
+            "list_data_sources",
+            "get_data_source",
+            "list_skill_sets",
+            "get_skill_set"
+        ]
+
+        self.write_indexer_tool_names = [
+            "list_indexers",
+            "get_indexer",
+            "create_indexer",
+            "delete_indexer",
+            "list_data_sources",
+            "get_data_source",
+            "list_skill_sets",
+            "get_skill_set"
         ]
 
     def _get_role_tools(self) -> list[str]:
@@ -25,16 +81,17 @@ class AISearchMCP(FastMCP):
         filtered_list_of_tools: list[str] = []
 
         # This is a dictionary of the groups
-        # @TODO: define the tool names for each group accordingly
+        # @TODO: define and validate the filtering of tool names for each group accordingly
         tool_database: dict[str, list[str]] = {
             "ALL" : self.all_tool_names, # this is the only one that is complete. The rest will be fixed shortly
-            "READ_INDEX": self.all_tool_names,
-            "WRITE_INDEX": self.all_tool_names,
-            "READ_DOCUMENTS": self.all_tool_names,
-            "WRITE_DOCUMENTS": self.all_tool_names,
-            "READ_INDEXERS": self.all_tool_names,
-            "WRITE_INDEXERS": self.all_tool_names,
-            "RUN_INDEXERS" : self.all_tool_names
+            "WRITE_OPERATIONS" : self.all_tool_names,
+            "READ_OPERATIONS" : self.read_indexer_tool_names + self.read_index_tool_names + self.read_document_tool_names,
+            "READ_INDEX": self.read_index_tool_names,
+            "WRITE_INDEX": self.write_index_tool_names,
+            "READ_DOCUMENTS": self.read_document_tool_names,
+            "WRITE_DOCUMENTS": self.write_document_tool_names,
+            "READ_INDEXERS": self.read_indexer_tool_names,
+            "WRITE_INDEXERS": self.write_indexer_tool_names,
         }
 
         for tool_group_name in tool_groups_list:

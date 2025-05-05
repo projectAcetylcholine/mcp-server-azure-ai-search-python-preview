@@ -9,7 +9,7 @@ from azure.search.documents import SearchClient, SearchItemPaged
 from azure.search.documents.indexes import SearchIndexClient, SearchIndexerClient
 from azure.search.documents.indexes._generated.models import FieldMapping, IndexingSchedule, IndexingParameters, \
     IndexingParametersConfiguration
-from azure.search.documents.indexes.models import SearchIndex, SearchIndexer
+from azure.search.documents.indexes.models import SearchIndex, SearchIndexer, SearchIndexerDataSourceConnection
 
 
 class SearchBaseDao:
@@ -130,12 +130,29 @@ class SearchIndexDao(SearchBaseDao):
 
         return search_results.serialize(keep_readonly=True)
 
-    def create_index(self, index_definition: SearchIndex) ->  MutableMapping[str, Any]:
+    def create_index(self, index_definition: SearchIndex) -> MutableMapping[str, Any]:
+        """
+        Creates a new index in the Azure AI Search service.
+
+        Args:
+            index_definition (SearchIndex): The full definition of the index to be created.
+
+        Returns:
+            MutableMapping[str, Any]: The serialized response of the created index.
+        """
         operation_results = self.client.create_index(index_definition)
         return operation_results.serialize(keep_readonly=True)
 
-
     def delete_index(self, index_name: str):
+        """
+        Deletes an existing index from the Azure AI Search service.
+
+        Args:
+            index_name (str): The name of the index to be deleted.
+
+        Returns:
+            None
+        """
         self.client.delete_index(index_name)
 
 class SearchClientDao(SearchBaseDao):
@@ -157,26 +174,72 @@ class SearchClientDao(SearchBaseDao):
         self.client.close()
 
     def add_document(self, document: dict):
+        """
+        Uploads a single document to the Azure AI Search index.
 
+        Args:
+            document (dict): The document to be added to the index.
+
+        Returns:
+            MutableMapping[str, Any]: The serialized result of the add operation for the single document.
+        """
         documents_to_add = [document]
         operation_results = self.add_documents(documents_to_add)
         return operation_results[0]
 
-
     def add_documents(self, documents: list[dict]) -> list[MutableMapping[str, Any]]:
+        """
+        Uploads a batch of documents to the Azure AI Search index.
 
+        Args:
+            documents (list[dict]): A list of documents to upload.
+
+        Returns:
+            list[MutableMapping[str, Any]]: A list of serialized results for each document upload operation.
+        """
         operation_results = self.client.upload_documents(documents)
 
-        results: list[ MutableMapping[str, Any]] = []
+        results: list[MutableMapping[str, Any]] = []
 
         for operation_result in operation_results:
             results.append(operation_result.serialize(keep_readonly=True))
 
         return results
 
-    def delete_document(self, documents: list[dict]) -> list[MutableMapping[str, Any]]:
+    def delete_document(self, key_field_name: str, key_value: str):
+        """
+        Deletes a single document from the Azure AI Search index.
 
-        operation_results = self.client.delete_documents(documents)
+        Args:
+            key_field_name (str): The name of the key field in the index
+            key_value (str): The value of the key field
+
+        Returns:
+            list[MutableMapping[str, Any]]: A list of serialized results for each document deletion operation.
+        """
+        document_lookup = {key_field_name: key_value}
+        documents = [document_lookup]
+
+        results = self.delete_documents(documents)
+
+        return results
+
+    def delete_documents(self, key_field_name: str, document_keys: list[str]) -> list[MutableMapping[str, Any]]:
+        """
+        Deletes a batch of documents from the Azure AI Search index.
+
+        Args:
+            key_field_name (str): The name of the key field in the index
+            document_keys (list[str]): A list of document keys to delete.
+
+        Returns:
+            list[MutableMapping[str, Any]]: A list of serialized results for each document deletion operation.
+        """
+        documents_to_delete = []
+        for document_key in document_keys:
+            documents_to_delete.append({key_field_name: document_key})
+
+        operation_results = self.client.delete_documents(documents_to_delete)
 
         results: list[MutableMapping[str, Any]] = []
 
@@ -294,9 +357,9 @@ class SearchIndexerDao(SearchBaseDao):
                        data_source_name: str,
                        target_index_name: str,
                        description: str,
-                       skill_set_name: str,
                        field_mappings: list[FieldMapping],
-                       output_field_mappings: list[FieldMapping]
+                       output_field_mappings: list[FieldMapping],
+                       skill_set_name: str = None,
                        ) -> MutableMapping[str, Any]:
         """
         Creates a new indexer in the Azure AI Search service.
@@ -306,9 +369,9 @@ class SearchIndexerDao(SearchBaseDao):
             data_source_name (str): The name of the indexer to be created.
             target_index_name (str): The name of the indexer to be created.
             description (str): The name of the indexer to be created.
-            skill_set_name (str): The name of the indexer to be created.
             field_mappings (list[FieldMapping]): The name of the indexer to be created.
             output_field_mappings (list[FieldMapping]): The name of the indexer to be created.
+            skill_set_name (str): The name of the indexer to be created.
 
         Returns:
             MutableMapping[str, Any]: A dictionary representing the created indexer.
@@ -317,9 +380,7 @@ class SearchIndexerDao(SearchBaseDao):
         interval: timedelta = timedelta(minutes=5)
         schedule: IndexingSchedule = IndexingSchedule(interval=interval)
 
-        indexing_configuration = IndexingParametersConfiguration(data_to_extract='contentAndMetadata', parsing_mode='json', query_timeout=None)
-
-        parameters =  IndexingParameters(configuration=indexing_configuration)
+        parameters = self._prepare_indexer_parameters(data_source_name)
 
         indexer_definition = SearchIndexer(
             name=name,
@@ -334,6 +395,20 @@ class SearchIndexerDao(SearchBaseDao):
         )
         indexer_result = self.client.create_indexer(indexer_definition)
         return indexer_result.serialize(keep_readonly=True)
+
+    def _prepare_indexer_parameters(self, data_source_name) -> IndexingParameters | None:
+
+        data_source_detail: SearchIndexerDataSourceConnection = self.client.get_data_source_connection(name=data_source_name)
+        data_source_type = data_source_detail.type
+
+        # Possible values include: "azuresql", "cosmosdb", "azureblob", "azuretable", "mysql", "adlsgen2".
+        if data_source_type == "azureblob":
+            indexing_configuration = IndexingParametersConfiguration(data_to_extract='contentAndMetadata',
+                                                                     parsing_mode='json', query_timeout=None)
+            parameters = IndexingParameters(configuration=indexing_configuration)
+            return parameters
+        return None
+
 
     def delete_indexer(self, name: str) -> None:
         """
@@ -367,7 +442,7 @@ class SearchIndexerDao(SearchBaseDao):
         Returns:
             MutableMapping[str, Any]: A dictionary representing the serialized data source definition.
         """
-        data_source_detail = self.client.get_data_source_connection(name=name)
+        data_source_detail: SearchIndexerDataSourceConnection = self.client.get_data_source_connection(name=name)
         data_source_result = data_source_detail.serialize(keep_readonly=True)
         return data_source_result
 
