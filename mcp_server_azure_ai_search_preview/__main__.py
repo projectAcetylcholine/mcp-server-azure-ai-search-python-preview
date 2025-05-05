@@ -4,9 +4,7 @@ from azure.search.documents.indexes._generated.models import FieldMapping
 from azure.search.documents.indexes.models import SearchIndexer, SearchIndex
 
 from mcp_server_azure_ai_search_preview import SearchIndexDao, SearchClientDao, SearchIndexerDao, SearchIndexSchema, \
-    convert_pydantic_model_to_search_index, FieldMappingModel, convert_to_field_mappings
-from shared import AISearchMCP
-# from data_access_objects import SearchIndexDao, SearchClientDao, SearchIndexerDao
+    convert_pydantic_model_to_search_index, FieldMappingModel, convert_to_field_mappings, AISearchMCP
 
 mcp = AISearchMCP("AI Search MCP Service", log_level="DEBUG")
 
@@ -292,7 +290,6 @@ async def get_skill_set(skill_set_name: str) -> MutableMapping[str, Any]:
 
 def run_mcp_service():
     mcp.run('sse')
-
 
 if __name__ == "__main__":
     run_mcp_service()
