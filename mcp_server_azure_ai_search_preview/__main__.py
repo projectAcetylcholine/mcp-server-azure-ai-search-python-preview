@@ -3,8 +3,9 @@ from typing import Any, MutableMapping, Optional, List
 from azure.search.documents.indexes._generated.models import FieldMapping
 from azure.search.documents.indexes.models import SearchIndexer, SearchIndex
 
+from mcp_server_azure_ai_search_preview import SearchIndexDao, SearchClientDao, SearchIndexerDao
 from shared import AISearchMCP
-from data_access_objects import SearchIndexDao, SearchClientDao, SearchIndexerDao
+# from data_access_objects import SearchIndexDao, SearchClientDao, SearchIndexerDao
 
 mcp = AISearchMCP("AI Search MCP Service", log_level="DEBUG")
 

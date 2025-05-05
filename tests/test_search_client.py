@@ -1,7 +1,8 @@
 
 import pytest
 from unittest.mock import patch, MagicMock
-from data_access_objects import SearchClientDao
+
+from mcp_server_azure_ai_search_preview import SearchClientDao
 
 
 @pytest.fixture

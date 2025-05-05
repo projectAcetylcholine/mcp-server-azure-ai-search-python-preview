@@ -1,9 +1,12 @@
-
+from datetime import timedelta
 from unittest.mock import patch, MagicMock
 
 import pytest
+from azure.search.documents.indexes._generated.models import FieldMapping
+from azure.search.documents.indexes.models import SearchIndexer
 
-from data_access_objects import SearchIndexerDao
+from mcp_server_azure_ai_search_preview import SearchIndexerDao
+
 
 @pytest.fixture
 def mock_dao():
@@ -38,15 +41,45 @@ def test_get_indexer(mock_dao):
 
 
 def test_create_indexer(mock_dao):
-    mock_indexer = MagicMock()
-    mock_indexer.serialize.return_value = {"name": "new-indexer"}
+    # Arrange
+    name = "sample-indexer"
+    data_source_name = "sample-datasource"
+    target_index_name = "sample-index"
+    description = "Test indexer for unit testing"
+    skill_set_name = "sample-skillset"
 
-    mock_dao.client.create_indexer.return_value = mock_indexer
+    field_mappings = [FieldMapping(source_field_name="src1", target_field_name="tgt1")]
+    output_field_mappings = [FieldMapping(source_field_name="src2", target_field_name="tgt2")]
 
-    result = mock_dao.create_indexer(mock_indexer)
+    # Mock the return of create_indexer
+    mock_indexer_instance = MagicMock()
+    mock_indexer_instance.serialize.return_value = {"name": name}
+    mock_dao.client.create_indexer.return_value = mock_indexer_instance
 
-    assert result == {"name": "new-indexer"}
-    mock_dao.client.create_indexer.assert_called_once_with(mock_indexer)
+    # Act
+    result = mock_dao.create_indexer(
+        name=name,
+        data_source_name=data_source_name,
+        target_index_name=target_index_name,
+        description=description,
+        field_mappings=field_mappings,
+        output_field_mappings=output_field_mappings,
+        skill_set_name=skill_set_name
+    )
+
+    # Assert
+    assert result == {"name": name}
+    mock_dao.client.create_indexer.assert_called_once()
+    created_indexer: SearchIndexer = mock_dao.client.create_indexer.call_args[0][0]
+
+    assert created_indexer.name == name
+    assert created_indexer.data_source_name == data_source_name
+    assert created_indexer.target_index_name == target_index_name
+    assert created_indexer.description == description
+    assert created_indexer.skillset_name == skill_set_name
+    assert created_indexer.field_mappings == field_mappings
+    assert created_indexer.output_field_mappings == output_field_mappings
+    assert created_indexer.schedule.interval == timedelta(minutes=5)
 
 
 def test_delete_indexer(mock_dao):
