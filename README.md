@@ -144,7 +144,7 @@ This is an example of the MCP configuration for VScode Agent Mode
                 "run",
                 "--directory",
                 "/Users/isekpo/Microsoft/mcp-server-azure-ai-search",
-                "main.py"
+                "__main__.py"
             ],
             "env": {
                 "AZURE_AI_SEARCH_MCP_TOOL_GROUPS": "ALL",
