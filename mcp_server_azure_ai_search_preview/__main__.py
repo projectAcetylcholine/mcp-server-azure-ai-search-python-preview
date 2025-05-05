@@ -3,7 +3,8 @@ from typing import Any, MutableMapping, Optional, List
 from azure.search.documents.indexes._generated.models import FieldMapping
 from azure.search.documents.indexes.models import SearchIndexer, SearchIndex
 
-from mcp_server_azure_ai_search_preview import SearchIndexDao, SearchClientDao, SearchIndexerDao
+from mcp_server_azure_ai_search_preview import SearchIndexDao, SearchClientDao, SearchIndexerDao, SearchIndexSchema, \
+    convert_pydantic_model_to_search_index, FieldMappingModel, convert_to_field_mappings
 from shared import AISearchMCP
 # from data_access_objects import SearchIndexDao, SearchClientDao, SearchIndexerDao
 
@@ -48,7 +49,7 @@ async def retrieve_index_schema(index_name: str) -> MutableMapping[str, Any]:
     return dao.retrieve_index_schema(index_name)
 
 @mcp.tool(description="Creates an AI Search index")
-async def create_index(index_definition: SearchIndex) -> MutableMapping[str, Any]:
+async def create_index(index_definition: SearchIndexSchema) -> MutableMapping[str, Any]:
     """
     Creates a new index in the Azure AI Search service.
 
@@ -59,7 +60,8 @@ async def create_index(index_definition: SearchIndex) -> MutableMapping[str, Any
         MutableMapping[str, Any]: The serialized response of the created index.
     """
     dao = SearchIndexDao()
-    return dao.create_index(index_definition)
+    compatible_index_definition = convert_pydantic_model_to_search_index(index_definition)
+    return dao.create_index(compatible_index_definition)
 
 @mcp.tool(description="Deletes the specified index from AI Search")
 async def delete_index(index_name: str):
@@ -189,8 +191,8 @@ async def create_indexer(
         data_source_name: str,
         target_index_name: str,
         description: str,
-        field_mappings: list[FieldMapping],
-        output_field_mappings: list[FieldMapping],
+        field_mappings: list[FieldMappingModel],
+        output_field_mappings: list[FieldMappingModel],
         skill_set_name: str = None
     ) -> MutableMapping[str, Any]:
     """
@@ -201,21 +203,25 @@ async def create_indexer(
         data_source_name (str): The name of the indexer to be created.
         target_index_name (str): The name of the indexer to be created.
         description (str): The name of the indexer to be created.
-        field_mappings (list[FieldMapping]): The name of the indexer to be created.
-        output_field_mappings (list[FieldMapping]): The name of the indexer to be created.
+        field_mappings (list[FieldMapping]): The field mappings to be created.
+        output_field_mappings (list[FieldMapping]): The field mappings in the index .
         skill_set_name (str): The name of the indexer to be created.
 
     Returns:
         MutableMapping[str, Any]: A dictionary representing the created indexer.
     """
     search_indexer_dao = SearchIndexerDao()
+
+    compat_field_mappings = convert_to_field_mappings(field_mappings)
+    compat_output_field_mappings = convert_to_field_mappings(output_field_mappings)
+
     return search_indexer_dao.create_indexer(
         name=name,
         data_source_name=data_source_name,
         target_index_name=target_index_name,
         description=description,
-        field_mappings=field_mappings,
-        output_field_mappings=output_field_mappings,
+        field_mappings=compat_field_mappings,
+        output_field_mappings=compat_output_field_mappings,
         skill_set_name=skill_set_name
     )
 
@@ -285,7 +291,7 @@ async def get_skill_set(skill_set_name: str) -> MutableMapping[str, Any]:
 
 
 def run_mcp_service():
-    mcp.run('stdio')
+    mcp.run('sse')
 
 
 if __name__ == "__main__":
