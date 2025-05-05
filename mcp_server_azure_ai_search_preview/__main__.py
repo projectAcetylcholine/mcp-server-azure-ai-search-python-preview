@@ -1,4 +1,4 @@
-from typing import Any, MutableMapping, Optional, List
+from typing import Any, MutableMapping, Optional, List, Literal
 
 from azure.search.documents.indexes._generated.models import FieldMapping
 from azure.search.documents.indexes.models import SearchIndexer, SearchIndex
@@ -289,7 +289,10 @@ async def get_skill_set(skill_set_name: str) -> MutableMapping[str, Any]:
 
 
 def run_mcp_service():
-    mcp.run('sse')
+    # @TODO: add ability to run as sse or stdio service
+    # @TODO add ability to retrieve environment file from argument and use it instead
+    transport: Literal["stdio", "sse"] = 'stdio'
+    mcp.run(transport)
 
 if __name__ == "__main__":
     run_mcp_service()
