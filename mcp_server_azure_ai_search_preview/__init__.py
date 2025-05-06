@@ -10,7 +10,7 @@ from mcp_server_azure_ai_search_preview.data_access_objects import (
     ScoringProfileSchema,
     convert_pydantic_model_to_search_index,
     convert_to_field_mappings,
-    FieldMappingModel,
+    FieldMappingModel, OperationResult, SearchDocument,
 )
 
 from mcp_server_azure_ai_search_preview.shared import AISearchMCP
@@ -29,6 +29,8 @@ __all__ = (
     'FieldMappingModel',
     'convert_pydantic_model_to_search_index',
     'convert_to_field_mappings',
+    'OperationResult',
+    'SearchDocument'
 )
 
 

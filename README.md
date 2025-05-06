@@ -86,9 +86,14 @@ uv build
 
 pip install dist/mcp_server_azure_ai_search_preview-0.3.1-py3-none-any.whl 
 
-# Once installed we can run in from any directory as  in your MCP host configuration
-uv run -m mcp_server_azure_ai_search_preview 
+# Once installed we can run in from any directory in your MCP host configuration in VSCODE .vscode/mcp.json file
+uv run -m mcp_server_azure_ai_search_preview --transport stdio --envFile .env
+
+# If you are running in SSE mode, you can run it as:
+uv run -m mcp_server_azure_ai_search_preview --transport sse --envFile .env --host 127.0.0.1 --port 8000
 ````
+
+The environment file, host and ports are optional. The default values will be used if you do not specify them
 
 You can also clone this git repo and install the service via the main.py file in this repo
 
@@ -151,7 +156,9 @@ This is an example of the MCP configuration for VScode Agent Mode
                 "run",
                 "--directory",
                 "/Users/isekpo/Microsoft/mcp-server-azure-ai-search",
-                "__main__.py"
+                "__main__.py",
+                "--transport",
+                "stdio"
             ],
             "env": {
                 "AZURE_AI_SEARCH_MCP_TOOL_GROUPS": "ALL",
@@ -163,5 +170,69 @@ This is an example of the MCP configuration for VScode Agent Mode
         }
     }
 }
+
+````
+
+### Running from Agent Frameworks like Pydantic AI
+
+In this example we have the following python code that can be run as follows:
+
+Contents of the requirements.txt file
+
+````text
+pydantic
+pydantic-ai
+
+````
+
+````bash
+pip install -r requirements.txt
+
+python mcp_agent.py 
+````
+
+````python 
+
+from openai import AsyncAzureOpenAI
+from pydantic_ai import Agent
+from pydantic_ai.mcp import MCPServerHTTP
+from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.providers.openai import OpenAIProvider
+from rich.prompt import Prompt
+
+server = MCPServerHTTP(url='http://127.0.0.1:8000/sse')
+
+model_name = 'gpt-4o-mini'
+
+client = AsyncAzureOpenAI()
+model = OpenAIModel(model_name, provider=OpenAIProvider(openai_client=client))
+agent = Agent(model, mcp_servers=[server])
+
+server.headers = {"client-id": "izzyacademy.msft"}
+
+global_message = """
+I am a helpful assistant. I can answer questions about Contoso Medical.
+"""
+prompt = """
+How can I help you?"""
+
+print(global_message)
+
+
+async def main():
+    async with agent.run_mcp_servers():
+
+        while True:
+            # Prompt the user for input
+            # and send it to the agent for processing
+            # Use rich prompt for better user experience
+            question = Prompt.ask(prompt)
+            result = await agent.run(question)
+            print(result.output)
+
+if __name__ == '__main__':
+    import asyncio
+    import sys
+    asyncio.run(main())
 
 ````

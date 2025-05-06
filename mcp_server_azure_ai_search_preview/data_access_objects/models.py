@@ -1,9 +1,18 @@
-from typing import List, Optional
+from typing import List, Optional, AnyStr, Any
 
 from azure.search.documents.indexes._generated.models import FieldMapping
 from pydantic import BaseModel
 from azure.search.documents.indexes.models import SearchIndex, SimpleField, SearchSuggester
 
+OperationResult = dict[str, Any]
+
+from pydantic import BaseModel, Extra
+
+class SearchDocument(BaseModel):
+    id: str
+
+    class Config:
+        extra = Extra.allow  # Allows arbitrary additional fields
 
 class SearchFieldSchema(BaseModel):
     name: str
@@ -85,3 +94,4 @@ def convert_to_field_mappings(models: List[FieldMappingModel]) -> List[FieldMapp
         )
         for model in models
     ]
+
