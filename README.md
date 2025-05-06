@@ -39,6 +39,7 @@ For the time being, the following tools are available from the service:
 | add_document          | WRITE_DOCUMENTS | Adds a document to the index                                                     |
 | delete_document       | WRITE_DOCUMENTS | Removes a document from the index                                                |
 | query_index           | READ_DOCUMENTS  | Searches a specific index to retrieve matching documents                         |
+| get_document_count    | READ_DOCUMENTS  | Returns the total number of documents in the index                               |
 | list_indexers         | READ_INDEXER    | Retrieve all names of indexers from the AI Search Service                        |
 | get_indexer           | READ_INDEXER    | Retrieve the full definition of a specific indexer from the AI Search Service    |
 | create_indexer        | WRITE_INDEXER   | Create a new indexer in the Search Service with the skill, index and data source |

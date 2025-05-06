@@ -173,6 +173,18 @@ class SearchClientDao(SearchBaseDao):
         """
         self.client.close()
 
+    def get_document_count(self) -> int:
+        """
+        Return the total number of documents in the index
+
+        Returns:
+           int: The total number of documents in the index.
+        """
+        search_text: str | None = None
+        search_results: SearchItemPaged[dict] = self.client.search(search_text=search_text, include_total_count=True)
+
+        return search_results.get_count()
+
     def add_document(self, document: dict):
         """
         Uploads a single document to the Azure AI Search index.
@@ -299,6 +311,9 @@ class SearchClientDao(SearchBaseDao):
             query_results.append(search_result_item)
 
         return query_results
+
+
+
 
 
 class SearchIndexerDao(SearchBaseDao):

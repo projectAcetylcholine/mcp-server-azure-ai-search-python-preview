@@ -20,6 +20,7 @@ class AISearchMCP(FastMCP):
             "add_document",
             "delete_document",
             "query_index",
+            "get_document_count",
             "list_indexers",
             "get_indexer",
             "create_indexer",
@@ -46,6 +47,7 @@ class AISearchMCP(FastMCP):
 
         self.read_document_tool_names = [
             "query_index",
+            "get_document_count"
         ]
 
         self.write_document_tool_names = [

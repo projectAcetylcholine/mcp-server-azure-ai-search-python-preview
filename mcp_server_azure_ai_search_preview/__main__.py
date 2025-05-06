@@ -83,6 +83,21 @@ def setup_mcp_service(host_name: str, port: int):
         dao.delete_index(index_name)
         return "Successful"
 
+    @mcp.tool(description="Return the total number of documents in the index")
+    def get_document_count(index_name: str) -> int:
+        """
+        Add a document to the specified Azure AI Search index
+
+        Args:
+            index_name (str): the name of the index
+
+        Returns:
+            int: The total number of documents in the index
+        """
+        search_client_dao = SearchClientDao(index_name)
+        result = search_client_dao.get_document_count()
+        return result
+
     @mcp.tool(description="Adds a document to the index")
     def add_document(index_name: str, document: SearchDocument) -> OperationResult:
         """
