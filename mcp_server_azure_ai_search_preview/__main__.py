@@ -86,7 +86,7 @@ def setup_mcp_service(host_name: str, port: int):
     @mcp.tool(description="Return the total number of documents in the index")
     def get_document_count(index_name: str) -> int:
         """
-        Add a document to the specified Azure AI Search index
+        Returns the total number of documents in the index
 
         Args:
             index_name (str): the name of the index
