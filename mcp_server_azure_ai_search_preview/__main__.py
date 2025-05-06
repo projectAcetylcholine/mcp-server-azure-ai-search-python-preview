@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import Any, MutableMapping, Optional, List, Literal
 from argparse import ArgumentParser
 from azure.search.documents.indexes._generated.models import FieldMapping
@@ -80,7 +81,7 @@ def setup_mcp_service(host_name: str, port: int):
         return dao.delete_index(index_name)
 
     @mcp.tool(description="Adds a document to the index compatible with the schema of the index")
-    async def add_document(index_name: str, document: dict[str, Any]):
+    def add_document(index_name: str, document: dict[str, Any]) -> dict[str, Any]:
         """
         Uploads a single document to the Azure AI Search index.
 
@@ -92,7 +93,8 @@ def setup_mcp_service(host_name: str, port: int):
             MutableMapping[str, Any]: The serialized result of the add operation for the single document.
         """
         search_client_dao = SearchClientDao(index_name)
-        search_client_dao.add_document(document)
+        result = search_client_dao.add_document(document)
+        return result
 
     @mcp.tool(description="Deletes a single document from the specified index")
     async def delete_document(index_name: str, key_field_name: str, key_value: str):
@@ -314,6 +316,17 @@ def run_mcp_service():
     # Set up the Host name and port
     mcp_host: str = args.host
     mcp_port: int = args.port
+
+    if transport in ["sse", "stdio"]:
+        print("")
+        print("")
+        print(f"Transport is specified as {transport}")
+    else:
+        print("")
+        print("")
+        print(f"Invalid transport was specified: transport={transport}")
+        parser.print_help()
+        sys.exit(1)
 
     # Check if envFile exists and load it
     if mcp_env_file and os.path.exists(mcp_env_file):
