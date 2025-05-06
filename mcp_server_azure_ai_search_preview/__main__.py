@@ -315,7 +315,6 @@ def run_mcp_service():
     mcp_host: str = args.host
     mcp_port: int = args.port
 
-
     # Check if envFile exists and load it
     if mcp_env_file and os.path.exists(mcp_env_file):
         load_dotenv(dotenv_path=mcp_env_file)
@@ -325,6 +324,7 @@ def run_mcp_service():
 
     mcp_service = setup_mcp_service(mcp_host, mcp_port)
 
+    # Check all params and then run or print the help message
     mcp_service.run(transport)
 
 if __name__ == "__main__":
