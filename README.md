@@ -87,11 +87,10 @@ uv build
 
 pip install dist/mcp_server_azure_ai_search_preview-0.3.1-py3-none-any.whl 
 
-# Once installed we can run in from any directory in your MCP host configuration in VSCODE .vscode/mcp.json file
-uv run -m mcp_server_azure_ai_search_preview --transport stdio --envFile .env
-
 # If you are running in SSE mode, you can run it as:
 uv run -m mcp_server_azure_ai_search_preview --transport sse --envFile .env --host 127.0.0.1 --port 8000
+
+#f you are running it in STDIO mode in Cursor or Claude Desktop, we have an example config below for you to use
 ````
 
 The environment file, host and ports are optional. The default values will be used if you do not specify them
