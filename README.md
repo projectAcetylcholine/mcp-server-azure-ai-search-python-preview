@@ -176,20 +176,41 @@ This is an example of the MCP configuration for VScode Agent Mode
 
 ### Running from Agent Frameworks like Pydantic AI
 
+To run this sample Python MCP client, you first need to make sure that the MCP SSE server is up and running. Once it is up and running then you can kick off the MCP client
+
+```bash
+
+# If you have installed the codebase as a pip module you can run it like this to start up the MCP server
+uv run -m mcp_server_azure_ai_search_preview --transport sse --envFile .env --host 127.0.0.1 --port 8000
+
+# If you have not yet installed it as a pip module, you can run it as follows to start up the server
+cd mcp-server-azure-ai-search/mcp_server_azure_ai_search_preview
+uv run __main__.py --transport sse --envFile .env --host 127.0.0.1 --port 8000
+
+```
+
+After the SSE server is up and running, you can now run the MCP client code below:
+
 In this example we have the following python code that can be run as follows:
 
-Contents of the requirements.txt file
+Go to a different folder and create a requirements.txt file 
+
+These are the contents of the requirements.txt file
 
 ````text
+
 pydantic
 pydantic-ai
 
 ````
 
-````bash
-pip install -r requirements.txt
+Create a Python file called "mcp_agent.py" 
 
+````bash
+
+pip install -r requirements.txt
 python mcp_agent.py 
+
 ````
 
 ````python 
