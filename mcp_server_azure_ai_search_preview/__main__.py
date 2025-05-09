@@ -113,6 +113,22 @@ def setup_mcp_service(host_name: str, port: int, log_level: LoggingLevel = "INFO
         compatible_index_definition = convert_pydantic_model_to_search_index(index_definition)
         return cast(OperationResult, dao.create_index(compatible_index_definition))
 
+    @mcp.tool(description="Updates an AI Search index with a new index definition")
+    async def modify_index(index_name: str, updated_index_definition: SearchIndexSchema) -> OperationResult:
+        """
+        Updates an AI Search index with the modified index definition
+
+        Args:
+            index_name (str): The name of the index to be updated
+            updated_index_definition (SearchIndexSchema): The full updated definition of the index.
+
+        Returns:
+            OperationResult: The serialized response of the modified index.
+        """
+        dao = SearchIndexDao()
+        compatible_index_definition = convert_pydantic_model_to_search_index(updated_index_definition)
+        return cast(OperationResult, dao.modify_index(index_name, compatible_index_definition))
+
     @mcp.tool(description="Deletes the specified index")
     async def delete_index(index_name: str) -> str:
         """
@@ -371,7 +387,7 @@ def run_mcp_service():
     parser.add_argument('--envFile', required=False, default='.env', help='Path to .env file (default: .env)')
     parser.add_argument('--host', required=False, default='0.0.0.0', help='Host IP or name for SSE (default: 0.0.0.0)')
     parser.add_argument('--port', required=False, type=int, default=8000, help='Port number for SSE (default: 8000)')
-    parser.add_argument('--logLevel', required=False, default='INFO', help='Logging Level (default: INFO) one of: ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]')
+    parser.add_argument('--logLevel', required=False, default='DEBUG', help='Logging Level (default: DEBUG) one of: ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]')
 
 
     # Parse the application arguments

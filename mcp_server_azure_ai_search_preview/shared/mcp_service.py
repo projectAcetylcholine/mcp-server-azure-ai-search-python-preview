@@ -10,7 +10,7 @@ LoggingLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 class FoundryKnowledgeMCP(FastMCP):
 
     def __init__(self, name: str | None = None, instructions: str | None = None, **settings: Any):
-        super().__init__(name=name, instructions=instructions, **settings)
+        super().__init__(name=name, instructions=instructions, local_level="DEBUG", **settings)
 
         self.all_tool_names: list[str] = [
             "list_index_names",
@@ -18,6 +18,7 @@ class FoundryKnowledgeMCP(FastMCP):
             "retrieve_index_schema",
             "create_index",
             "delete_index",
+            "modify_index",
             "add_document",
             "delete_document",
             "query_index",
@@ -51,6 +52,7 @@ class FoundryKnowledgeMCP(FastMCP):
             "retrieve_index_schema",
             "create_index",
             "delete_index",
+            "modify_index",
         ]
 
         self.read_document_tool_names = [

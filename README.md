@@ -35,6 +35,7 @@ For the time being, the following tools are available from the service:
 | list_index_schemas                      | READ_INDEX          | Retrieve all index schemas from the AI Search Service                            | 
 | retrieve_index_schema                   | READ_INDEX          | Retrieve the schema for a specific index from the AI Search Service              | 
 | create_index                            | WRITE_INDEX         | Creates a new index                                                              |
+| modify_index                            | WRITE_INDEX         | Modifies the index definition of an existing inde                                |
 | delete_index                            | WRITE_INDEX         | Removes an existing index                                                        |
 | add_document                            | WRITE_DOCUMENTS     | Adds a document to the index                                                     |
 | delete_document                         | WRITE_DOCUMENTS     | Removes a document from the index                                                |

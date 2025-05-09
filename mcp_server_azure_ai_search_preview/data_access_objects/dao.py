@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 from typing import MutableMapping, Any, Optional, List, Union
-
+from mcp.server.fastmcp.server import logger
 from azure.core.credentials import AzureKeyCredential
 from azure.core.paging import ItemPaged
 from azure.identity import DefaultAzureCredential
@@ -130,6 +130,24 @@ class SearchIndexDao(SearchBaseDao):
 
         return search_results.serialize(keep_readonly=True)
 
+    def modify_index(self, index_name: str, updated_index_definition: SearchIndex) -> MutableMapping[str, Any]:
+        """
+        Updates an existing index in the Azure AI Search service.
+
+        Args:
+            index_name (SearchIndex): The name of the index to be updated
+            updated_index_definition (SearchIndex): The full definition of the index.
+
+        Returns:
+            MutableMapping[str, Any]: The serialized response of the created index.
+        """
+
+        logger.debug(f"Updating Index {index_name} with new definition", updated_index_definition)
+
+        updated_index_definition.name = index_name
+        operation_results = self.client.create_or_update_index(updated_index_definition)
+        return operation_results.serialize(keep_readonly=True)
+
     def create_index(self, index_definition: SearchIndex) -> MutableMapping[str, Any]:
         """
         Creates a new index in the Azure AI Search service.
@@ -140,6 +158,7 @@ class SearchIndexDao(SearchBaseDao):
         Returns:
             MutableMapping[str, Any]: The serialized response of the created index.
         """
+        logger.debug("Creating Index ", index_definition)
         operation_results = self.client.create_index(index_definition)
         return operation_results.serialize(keep_readonly=True)
 
@@ -153,6 +172,7 @@ class SearchIndexDao(SearchBaseDao):
         Returns:
             None
         """
+        logger.debug(f"Deleting Index {index_name}")
         self.client.delete_index(index_name)
 
 class SearchClientDao(SearchBaseDao):
@@ -164,6 +184,7 @@ class SearchClientDao(SearchBaseDao):
         """
         super().__init__()
         credentials = self._fetch_credentials()
+        self.index_name = index_name
         self.client = SearchClient(self.service_endpoint, index_name, credentials, api_version=self.api_version)
 
     def close(self):
@@ -209,6 +230,8 @@ class SearchClientDao(SearchBaseDao):
         Returns:
             list[MutableMapping[str, Any]]: A list of serialized results for each document upload operation.
         """
+
+        logger.debug(f"Adding documents to index {self.index_name}", documents)
         operation_results = self.client.upload_documents(documents)
 
         results: list[MutableMapping[str, Any]] = []
@@ -231,8 +254,10 @@ class SearchClientDao(SearchBaseDao):
         """
         document_lookup = {key_field_name: key_value}
         documents = [document_lookup]
+        document_keys: list[str] = [key_value]
 
-        results = self.delete_documents(documents)
+        logger.debug(f"Removing document from index {self.index_name}", documents)
+        results = self.delete_documents(key_field_name=key_field_name, document_keys=document_keys)
 
         return results
 
@@ -251,9 +276,11 @@ class SearchClientDao(SearchBaseDao):
         for document_key in document_keys:
             documents_to_delete.append({key_field_name: document_key})
 
+        logger.debug(f"Removing document from index {self.index_name}", documents_to_delete)
         operation_results = self.client.delete_documents(documents_to_delete)
 
         results: list[MutableMapping[str, Any]] = []
+
 
         for operation_result in operation_results:
             results.append(operation_result.serialize(keep_readonly=True))
