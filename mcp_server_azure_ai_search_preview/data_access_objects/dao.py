@@ -261,6 +261,8 @@ class SearchClientDao(SearchBaseDao):
 
         return results
 
+    # @TODO: expose this to the MCP clients only after thorough testing with a lot of models
+    # For now it is ok to delete just one document at a time
     def delete_documents(self, key_field_name: str, document_keys: list[str]) -> list[MutableMapping[str, Any]]:
         """
         Deletes a batch of documents from the Azure AI Search index.
