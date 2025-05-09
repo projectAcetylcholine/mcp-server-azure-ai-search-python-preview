@@ -1,0 +1,17 @@
+{
+  "name": "azureblob-departments-datasource",
+  "description": "Data source for picking up grocery department records from the blob store container called departments",
+  "type": "azureblob",
+  "subtype": null,
+  "credentials": {
+    "connectionString": "ResourceId=/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{storageAccountName};"
+  },
+  "container": {
+    "name": "{containerName}",
+    "query": ""
+  },
+  "dataChangeDetectionPolicy": null,
+  "dataDeletionDetectionPolicy": null,
+  "encryptionKey": null,
+  "identity": null
+}

@@ -1,0 +1,46 @@
+{
+  "name": "indexer-departments",
+  "description": "An indexer for pulling data from Cosmos DB into the AI Search index with skillsets to translate the columns to portuguese",
+  "dataSourceName": "cosmosdb-datasource",
+  "skillsetName": "departmentskills",
+  "targetIndexName": "departments-pt",
+  "disabled": null,
+  "schedule": null,
+  "parameters": null,
+  "fieldMappings": [
+    {
+      "sourceFieldName": "id",
+      "targetFieldName": "id",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "department",
+      "targetFieldName": "department",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "description",
+      "targetFieldName": "description",
+      "mappingFunction": null
+    }
+  ],
+  "outputFieldMappings": [
+    {
+      "sourceFieldName": "/document/translatedText",
+      "targetFieldName": "translatedText",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "/document/translatedFromLanguageCode",
+      "targetFieldName": "translatedFromLanguageCode",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "/document/translatedToLanguageCode",
+      "targetFieldName": "translatedToLanguageCode",
+      "mappingFunction": null
+    }
+  ],
+  "cache": null,
+  "encryptionKey": null
+}

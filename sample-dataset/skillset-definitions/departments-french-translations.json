@@ -1,0 +1,34 @@
+{
+  "name": "french-departments",
+  "description": "Used to process the department description into French",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.TranslationSkill",
+      "name": "#1",
+      "context": "/document",
+      "defaultToLanguageCode": "fr",
+      "suggestedFrom": "en",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/description",
+          "inputs": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "translatedText",
+          "targetName": "translatedText"
+        },
+        {
+          "name": "translatedFromLanguageCode",
+          "targetName": "translatedFromLanguageCode"
+        },
+        {
+          "name": "translatedToLanguageCode",
+          "targetName": "translatedToLanguageCode"
+        }
+      ]
+    }
+  ]
+}

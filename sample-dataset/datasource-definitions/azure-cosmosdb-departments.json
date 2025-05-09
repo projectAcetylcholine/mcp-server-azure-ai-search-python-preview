@@ -1,0 +1,20 @@
+{
+  "name": "cosmosdb-departments-datasource",
+  "description": "Data source to pull data from Azure Cosmos DB container called departments",
+  "type": "cosmosdb",
+  "subtype": null,
+  "credentials": {
+    "connectionString": "{CosmosDB connection string}"
+  },
+  "container": {
+    "name": "{cosmos db container name}",
+    "query": null
+  },
+  "dataChangeDetectionPolicy": {
+    "@odata.type": "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy",
+    "highWaterMarkColumnName": "_ts"
+  },
+  "dataDeletionDetectionPolicy": null,
+  "encryptionKey": null,
+  "identity": null
+}
