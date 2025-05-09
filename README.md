@@ -134,9 +134,9 @@ You can also filter the list of tools returned to your MCP host by specifying a 
 | AZURE_AI_SEARCH_MCP_TOOL_GROUPS | `string`         | A comma-delimited list of groups of tools you would like to filter when retrieving tools for your MCP host |
 
 
-### MCP Host Configuration 
+### MCP Host Configuration in STDIO Mode
 
-This is an example of the MCP configuration for VScode Agent Mode
+This is an example of the MCP configuration for VScode Agent Mode using the STDIO transport
 
 ````json
 
@@ -147,6 +147,12 @@ This is an example of the MCP configuration for VScode Agent Mode
             "id": "AZURE_AI_SEARCH_API_KEY",
             "description": "AZURE_AI_SEARCH_API_KEY",
             "password": true
+        },
+        {
+            "type": "promptString",
+            "id": "LOCAL_WORKING_DIRECTORY",
+            "description": "Directory where the MCP service Git repo was cloned to",
+            "password": false
         }
     ],
     "servers": {
@@ -158,8 +164,9 @@ This is an example of the MCP configuration for VScode Agent Mode
             "args": [
                 "run",
                 "--directory",
-                "/Users/isekpo/Microsoft/mcp-server-azure-ai-search",
-                "__main__.py",
+                "${input:LOCAL_WORKING_DIRECTORY}",
+                "-m",
+                "run mcp_server_azure_ai_search_preview"
                 "--transport",
                 "stdio"
             ],
@@ -175,6 +182,62 @@ This is an example of the MCP configuration for VScode Agent Mode
 }
 
 ````
+
+This example uses a custom environment variable file to specify the environment variables used by the MCP server
+
+````json
+
+{
+    "inputs": [
+        {
+            "type": "promptString",
+            "id": "LOCAL_WORKING_DIRECTORY",
+            "description": "Directory where the MCP service Git repo was cloned to",
+            "password": false
+        }
+    ],
+    "servers": {
+
+        "ai_search_mcp": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "run",
+                "--directory",
+                "${input:LOCAL_WORKING_DIRECTORY}",
+                "-m",
+                "run mcp_server_azure_ai_search_preview"
+                "--transport",
+                "stdio"
+               "--envFile",
+                ".env"
+            ]
+        }
+    }
+}
+
+````
+
+This example uses and MCP server running in SSE mode
+
+```bash
+# Start up the MCP server first and then specify this config in your `.vscode/mcp.json` file in your VSCODE workspace
+
+uv run -m mcp_server_azure_ai_search_preview --transport sse --envFile .env
+
+```
+
+```json
+{
+    "servers": {
+        "ai_search_2": {
+            "type": "sse",
+            "url": "http://localhost:8000/sse"
+        }
+    }
+}
+
+```
 
 ### Running from Agent Frameworks like Pydantic AI
 
