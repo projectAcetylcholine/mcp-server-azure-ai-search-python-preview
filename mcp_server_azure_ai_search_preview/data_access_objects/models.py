@@ -1,7 +1,7 @@
 from typing import List, Optional, AnyStr, Any
 
 from azure.search.documents.indexes._generated.models import FieldMapping
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from azure.search.documents.indexes.models import SearchIndex, SimpleField, SearchSuggester
 
 OperationResult = dict[str, Any]
@@ -10,9 +10,7 @@ from pydantic import BaseModel, Extra
 
 class SearchDocument(BaseModel):
     id: str
-
-    class Config:
-        extra = Extra.allow  # Allows arbitrary additional fields
+    model_config = ConfigDict(extra="allow")
 
 class SearchFieldSchema(BaseModel):
     name: str

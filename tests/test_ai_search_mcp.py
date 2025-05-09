@@ -4,11 +4,11 @@ from unittest.mock import AsyncMock, patch
 
 from mcp.types import Tool as MCPTool
 
-from mcp_server_azure_ai_search_preview.shared import AISearchMCP
+from mcp_server_azure_ai_search_preview.shared import FoundryKnowledgeMCP
 
 
 def test_ai_search_mcp_initialization():
-    mcp = AISearchMCP(name="Test MCP")
+    mcp = FoundryKnowledgeMCP(name="Test MCP")
 
     assert isinstance(mcp.all_tool_names, list)
     assert "list_index_names" in mcp.all_tool_names
@@ -26,7 +26,7 @@ def test_ai_search_mcp_initialization():
 def test_get_role_tools_filtered_by_env(env_value, expected_tool_subset, monkeypatch):
     monkeypatch.setenv("AZURE_AI_SEARCH_MCP_TOOL_GROUPS", env_value)
 
-    mcp = AISearchMCP()
+    mcp = FoundryKnowledgeMCP()
     tools = mcp._get_role_tools()
 
     for expected_tool in expected_tool_subset:
@@ -45,13 +45,13 @@ async def test_list_tools_filters_by_role(monkeypatch):
         MCPTool(name="create_index", description="", inputSchema={})  # Should be excluded
     ]
 
-    class MockedMCP(AISearchMCP):
+    class MockedMCP(FoundryKnowledgeMCP):
         async def list_tools(self):
             return mock_tool_list
 
     mcp = MockedMCP()
 
-    with patch("mcp_server_azure_ai_search_preview.shared.AISearchMCP.list_tools", new=AsyncMock(return_value=mock_tool_list)):
+    with patch("mcp_server_azure_ai_search_preview.shared.FoundryKnowledgeMCP.list_tools", new=AsyncMock(return_value=mock_tool_list)):
         filtered = await mcp.list_tools()
         filtered_names = [tool.name for tool in filtered]
 

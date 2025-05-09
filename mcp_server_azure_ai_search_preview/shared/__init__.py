@@ -1,4 +1,5 @@
-from .mcp_service import AISearchMCP
+from .mcp_service import FoundryKnowledgeMCP, LoggingLevel
 __all__ = (
- 'AISearchMCP',
+    'FoundryKnowledgeMCP',
+    'LoggingLevel'
 )

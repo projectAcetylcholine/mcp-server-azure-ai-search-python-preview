@@ -13,10 +13,11 @@ from mcp_server_azure_ai_search_preview.data_access_objects import (
     FieldMappingModel, OperationResult, SearchDocument,
 )
 
-from mcp_server_azure_ai_search_preview.shared import AISearchMCP
+from mcp_server_azure_ai_search_preview.shared import FoundryKnowledgeMCP, LoggingLevel
 
 __all__ = (
-    'AISearchMCP',
+    'FoundryKnowledgeMCP',
+    'LoggingLevel',
     'SearchIndexDao',
     'SearchBaseDao',
     'SearchClientDao',

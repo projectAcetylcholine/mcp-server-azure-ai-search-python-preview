@@ -1,14 +1,15 @@
 import os
-from typing import Any
+from typing import Any, Literal
 
 from mcp.server.fastmcp.server import logger, FastMCP
 from mcp.types import Tool as MCPTool
 
+LoggingLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
-class AISearchMCP(FastMCP):
 
-    def __init__(
-        self, name: str | None = None, instructions: str | None = None, **settings: Any):
+class FoundryKnowledgeMCP(FastMCP):
+
+    def __init__(self, name: str | None = None, instructions: str | None = None, **settings: Any):
         super().__init__(name=name, instructions=instructions, **settings)
 
         self.all_tool_names: list[str] = [
@@ -28,7 +29,14 @@ class AISearchMCP(FastMCP):
             "list_data_sources",
             "get_data_source",
             "list_skill_sets",
-            "get_skill_set"
+            "get_skill_set",
+            "fk_fetch_local_file_contents",
+            "fk_fetch_url_contents",
+        ]
+
+        self.fetch_file_contents = [
+            "fk_fetch_local_file_contents",
+            "fk_fetch_url_contents",
         ]
 
         self.read_index_tool_names = [
@@ -85,15 +93,16 @@ class AISearchMCP(FastMCP):
         # This is a dictionary of the groups
         # @TODO: define and validate the filtering of tool names for each group accordingly
         tool_database: dict[str, list[str]] = {
-            "ALL" : self.all_tool_names,
-            "WRITE_OPERATIONS" : self.all_tool_names,
-            "READ_OPERATIONS" : self.read_indexer_tool_names + self.read_index_tool_names + self.read_document_tool_names,
+            "ALL": self.all_tool_names,
+            "WRITE_OPERATIONS": self.all_tool_names,
+            "READ_OPERATIONS": self.read_indexer_tool_names + self.read_index_tool_names + self.read_document_tool_names + self.fetch_file_contents,
             "READ_INDEX": self.read_index_tool_names,
             "WRITE_INDEX": self.write_index_tool_names,
             "READ_DOCUMENTS": self.read_document_tool_names,
             "WRITE_DOCUMENTS": self.write_document_tool_names,
             "READ_INDEXERS": self.read_indexer_tool_names,
             "WRITE_INDEXERS": self.write_indexer_tool_names,
+            "FETCH_FILE_CONTENTS": self.fetch_file_contents
         }
 
         for tool_group_name in tool_groups_list:

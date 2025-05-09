@@ -29,25 +29,27 @@ Please proceed with caution and use at your own risk.
 
 For the time being, the following tools are available from the service:
 
-| Tool Name             | Tool Group      | Tool Description                                                                 |
-|-----------------------|-----------------|----------------------------------------------------------------------------------|
-| list_index_names      | READ_INDEX      | Retrieve all names of indexes from the AI Search Service                         |   
-| list_index_schemas    | READ_INDEX      | Retrieve all index schemas from the AI Search Service                            | 
-| retrieve_index_schema | READ_INDEX      | Retrieve the schema for a specific index from the AI Search Service              | 
-| create_index          | WRITE_INDEX     | Creates a new index                                                              |
-| delete_index          | WRITE_INDEX     | Removes an existing index                                                        |
-| add_document          | WRITE_DOCUMENTS | Adds a document to the index                                                     |
-| delete_document       | WRITE_DOCUMENTS | Removes a document from the index                                                |
-| query_index           | READ_DOCUMENTS  | Searches a specific index to retrieve matching documents                         |
-| get_document_count    | READ_DOCUMENTS  | Returns the total number of documents in the index                               |
-| list_indexers         | READ_INDEXER    | Retrieve all names of indexers from the AI Search Service                        |
-| get_indexer           | READ_INDEXER    | Retrieve the full definition of a specific indexer from the AI Search Service    |
-| create_indexer        | WRITE_INDEXER   | Create a new indexer in the Search Service with the skill, index and data source |
-| delete_indexer        | WRITE_INDEXER   | Delete an indexer from the AI Search Service by name                             |
-| list_data_sources     | READ_INDEXER    | Retrieve all names of data sources from the AI Search Service                    |
-| get_data_source       | READ_INDEXER    | Retrieve the full definition of a specific data source                           |
-| list_skill_sets       | READ_INDEXER    | Retrieve all names of skill sets from the AI Search Service                      |
-| get_skill_set         | READ_INDEXER    | Retrieve the full definition of a specific skill set                             |
+| Tool Name                               | Tool Group          | Tool Description                                                                 |
+|-----------------------------------------|---------------------|----------------------------------------------------------------------------------|
+| list_index_names                        | READ_INDEX          | Retrieve all names of indexes from the AI Search Service                         |   
+| list_index_schemas                      | READ_INDEX          | Retrieve all index schemas from the AI Search Service                            | 
+| retrieve_index_schema                   | READ_INDEX          | Retrieve the schema for a specific index from the AI Search Service              | 
+| create_index                            | WRITE_INDEX         | Creates a new index                                                              |
+| delete_index                            | WRITE_INDEX         | Removes an existing index                                                        |
+| add_document                            | WRITE_DOCUMENTS     | Adds a document to the index                                                     |
+| delete_document                         | WRITE_DOCUMENTS     | Removes a document from the index                                                |
+| query_index                             | READ_DOCUMENTS      | Searches a specific index to retrieve matching documents                         |
+| get_document_count                      | READ_DOCUMENTS      | Returns the total number of documents in the index                               |
+| list_indexers                           | READ_INDEXER        | Retrieve all names of indexers from the AI Search Service                        |
+| get_indexer                             | READ_INDEXER        | Retrieve the full definition of a specific indexer from the AI Search Service    |
+| create_indexer                          | WRITE_INDEXER       | Create a new indexer in the Search Service with the skill, index and data source |
+| delete_indexer                          | WRITE_INDEXER       | Delete an indexer from the AI Search Service by name                             |
+| list_data_sources                       | READ_INDEXER        | Retrieve all names of data sources from the AI Search Service                    |
+| get_data_source                         | READ_INDEXER        | Retrieve the full definition of a specific data source                           |
+| list_skill_sets                         | READ_INDEXER        | Retrieve all names of skill sets from the AI Search Service                      |
+| get_skill_set                           | READ_INDEXER        | Retrieve the full definition of a specific skill set                             |
+| fk_fetch_local_file_contents            | FETCH_FILE_CONTENTS | Retrieves the contents of a local file path (sample JSON, document etc)          |
+| fk_fetch_url_contents                   | FETCH_FILE_CONTENTS | Retrieves the contents of a URL (sample JSON, document etc)                      |
 
 ### MCP Service Tool Groups
 

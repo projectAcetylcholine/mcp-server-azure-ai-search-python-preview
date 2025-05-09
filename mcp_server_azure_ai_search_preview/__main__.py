@@ -1,21 +1,66 @@
 import os
 import sys
-from typing import Any, MutableMapping, Optional, List, Literal
 from argparse import ArgumentParser
+from pathlib import Path
+from typing import Optional, List, Literal, cast
+
+import httpx
 from azure.search.documents.indexes._generated.models import FieldMapping
-from azure.search.documents.indexes.models import SearchIndexer, SearchIndex
 from dotenv import load_dotenv
 
 from mcp_server_azure_ai_search_preview import SearchIndexDao, SearchClientDao, SearchIndexerDao, SearchIndexSchema, \
-    convert_pydantic_model_to_search_index, FieldMappingModel, convert_to_field_mappings, AISearchMCP, OperationResult, \
-    SearchDocument
+    convert_pydantic_model_to_search_index, FieldMappingModel, convert_to_field_mappings, FoundryKnowledgeMCP, \
+    OperationResult, \
+    SearchDocument, LoggingLevel
 
 
-def setup_mcp_service(host_name: str, port: int):
+def setup_mcp_service(host_name: str, port: int, log_level: LoggingLevel = "INFO"):
 
-    settings = {"host": host_name, "port": port}
+    settings = {"host": host_name, "port": port, "log_level": log_level}
 
-    mcp = AISearchMCP("AI Search MCP Service", log_level="DEBUG", **settings)
+    mcp = FoundryKnowledgeMCP("AI Search MCP Service", **settings)
+
+    @mcp.tool(description="Reads the content of a local file and returns it as a string")
+    def fk_fetch_local_file_contents(file_path: str, encoding: str = "utf-8") -> str:
+        """
+        Reads the content of a local file and returns it as a string.
+
+        Args:
+            file_path (str): The path to the local file.
+            encoding (str): The character encoding to use (default is 'utf-8').
+
+        Returns:
+            str: The contents of the file as a string.
+
+        Raises:
+            FileNotFoundError: If the file does not exist.
+            IOError: If the file cannot be read.
+        """
+        path = Path(file_path)
+        if not path.is_file():
+            raise FileNotFoundError(f"No such file: '{file_path}'")
+
+        return path.read_text(encoding=encoding)
+
+    @mcp.tool(description="Fetches the contents of the given HTTP URL")
+    async def fk_fetch_url_contents(url: str) -> str:
+        """
+        Fetches the contents of the given HTTP URL
+
+        Args:
+            url (str): The URL to fetch content from.
+
+        Returns:
+            str: The content retrieved from the URL.
+
+        Raises:
+            httpx.RequestError: If the request fails due to a network problem.
+            httpx.HTTPStatusError: If the response status code is not 2xx.
+        """
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            response.raise_for_status()
+            return response.text
 
     @mcp.tool(description="Retrieves the names of all indexes ")
     async def list_index_names() -> list[str]:
@@ -37,7 +82,7 @@ def setup_mcp_service(host_name: str, port: int):
             list[OperationResult]: A list of dictionaries, each representing the schema of an index.
         """
         dao = SearchIndexDao()
-        return dao.retrieve_index_schemas()
+        return cast(list[OperationResult], dao.retrieve_index_schemas())
 
     @mcp.tool(description="Retrieves the schema for a specific index")
     async def retrieve_index_schema(index_name: str) -> OperationResult:
@@ -51,7 +96,7 @@ def setup_mcp_service(host_name: str, port: int):
             OperationResult: A dictionary representing the schema of the specified index.
         """
         dao = SearchIndexDao()
-        return dao.retrieve_index_schema(index_name)
+        return cast(OperationResult, dao.retrieve_index_schema(index_name))
 
     @mcp.tool(description="Creates an AI Search index")
     async def create_index(index_definition: SearchIndexSchema) -> OperationResult:
@@ -66,7 +111,7 @@ def setup_mcp_service(host_name: str, port: int):
         """
         dao = SearchIndexDao()
         compatible_index_definition = convert_pydantic_model_to_search_index(index_definition)
-        return dao.create_index(compatible_index_definition)
+        return cast(OperationResult, dao.create_index(compatible_index_definition))
 
     @mcp.tool(description="Deletes the specified index")
     async def delete_index(index_name: str) -> str:
@@ -112,7 +157,7 @@ def setup_mcp_service(host_name: str, port: int):
         """
         search_client_dao = SearchClientDao(index_name)
         result = search_client_dao.add_document(document.model_dump())
-        return result
+        return cast(OperationResult, result)
 
     @mcp.tool(description="Removes a document from the index")
     async def delete_document(index_name: str, key_field_name: str, key_value: str) -> OperationResult:
@@ -128,7 +173,7 @@ def setup_mcp_service(host_name: str, port: int):
             OperationResult: A list of serialized results for each document deletion operation.
         """
         search_client_dao = SearchClientDao(index_name)
-        return search_client_dao.delete_document(key_field_name, key_value)
+        return cast(OperationResult, search_client_dao.delete_document(key_field_name, key_value))
 
     @mcp.tool(description="Search a specific index for documents in that index")
     async def query_index(
@@ -206,7 +251,7 @@ def setup_mcp_service(host_name: str, port: int):
             OperationResult: A dictionary containing the indexer details.
         """
         search_indexer_dao = SearchIndexerDao()
-        return search_indexer_dao.get_indexer(name)
+        return cast(OperationResult, search_indexer_dao.get_indexer(name))
 
     @mcp.tool(description="Creates a new indexer")
     async def create_indexer(
@@ -238,7 +283,7 @@ def setup_mcp_service(host_name: str, port: int):
         compat_field_mappings = convert_to_field_mappings(field_mappings)
         compat_output_field_mappings = convert_to_field_mappings(output_field_mappings)
 
-        return search_indexer_dao.create_indexer(
+        result = search_indexer_dao.create_indexer(
             name=name,
             data_source_name=data_source_name,
             target_index_name=target_index_name,
@@ -247,6 +292,8 @@ def setup_mcp_service(host_name: str, port: int):
             output_field_mappings=compat_output_field_mappings,
             skill_set_name=skill_set_name
         )
+
+        return cast(OperationResult, result)
 
     @mcp.tool(description="Deletes the indexer")
     async def delete_indexer(name: str) -> str:
@@ -286,7 +333,7 @@ def setup_mcp_service(host_name: str, port: int):
             OperationResult: A dictionary containing the data source details.
         """
         search_indexer_dao = SearchIndexerDao()
-        return search_indexer_dao.get_data_source(name)
+        return cast(OperationResult, search_indexer_dao.get_data_source(name))
 
     @mcp.tool(description="Retrieves the list of the names of all skill sets")
     async def list_skill_sets() -> list[str]:
@@ -311,7 +358,7 @@ def setup_mcp_service(host_name: str, port: int):
             OperationResult: A dictionary containing the skill set details.
         """
         search_indexer_dao = SearchIndexerDao()
-        return search_indexer_dao.get_skill_set(skill_set_name)
+        return cast(OperationResult, search_indexer_dao.get_skill_set(skill_set_name))
 
     return mcp
 
@@ -324,6 +371,8 @@ def run_mcp_service():
     parser.add_argument('--envFile', required=False, default='.env', help='Path to .env file (default: .env)')
     parser.add_argument('--host', required=False, default='0.0.0.0', help='Host IP or name for SSE (default: 0.0.0.0)')
     parser.add_argument('--port', required=False, type=int, default=8000, help='Port number for SSE (default: 8000)')
+    parser.add_argument('--logLevel', required=False, default='INFO', help='Logging Level (default: INFO) one of: ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]')
+
 
     # Parse the application arguments
     args = parser.parse_args()
@@ -331,6 +380,7 @@ def run_mcp_service():
     # Retrieve the specified transport
     transport: Literal["stdio", "sse"] = args.transport
     mcp_env_file = args.envFile
+    log_level: LoggingLevel = args.logLevel
 
     # Set up the Host name and port
     mcp_host: str = args.host
@@ -354,7 +404,7 @@ def run_mcp_service():
     else:
         print(f"Env file '{mcp_env_file}' not found. Skipping environment loading.")
 
-    mcp_service = setup_mcp_service(mcp_host, mcp_port)
+    mcp_service = setup_mcp_service(mcp_host, mcp_port, log_level=log_level)
 
     # Check all params and then run or print the help message
     mcp_service.run(transport)
