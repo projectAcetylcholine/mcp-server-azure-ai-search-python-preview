@@ -9,6 +9,10 @@ This experimental MCP service provides you with the following capabilities:
 - Run Queries against specific AI Search Indices
 - Create and Update indexers
 
+## Project Relocation
+This was the original home of this project but the team has moved it to its official home at the following address
+https://github.com/azure-ai-foundry/mcp-foundry
+
 ### Important Disclaimers
 
 We are still implementing and testing out these capabilities. 
